@@ -24,19 +24,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(HttpMethod.GET).permitAll()
-                        .requestMatchers(HttpMethod.POST).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers("/inicioSesion", "/auth/**").permitAll()  // Público
-                        .requestMatchers("/dashboard/**").authenticated()  // Solo usuarios con rol "USER"
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Solo usuarios con rol "ADMIN"
-                        .requestMatchers("/api/v1/**").authenticated()  // Requiere autenticación general
-                        .anyRequest().authenticated()  // Todas las demás solicitudes requieren autenticación
+                .csrf(csrf ->
+                        csrf
+                                .disable())
+                .authorizeHttpRequests(authRequests ->
+                        authRequests
+                                .requestMatchers(HttpMethod.GET).permitAll()
+                                .requestMatchers(HttpMethod.POST).permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/api/v1/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sessionManagement ->
+                        sessionManagement
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
