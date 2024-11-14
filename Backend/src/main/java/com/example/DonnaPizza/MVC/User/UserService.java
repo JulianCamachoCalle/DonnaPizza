@@ -1,9 +1,10 @@
 package com.example.DonnaPizza.MVC.User;
 
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -23,29 +24,25 @@ public class UserService {
                 .apellido(userRequest.getApellido())
                 .telefono(userRequest.getTelefono())
                 .direccion(userRequest.getDireccion())
-                .fecha_registro(userRequest.getFecha_registro())
                 .rol(Role.USER)
                 .build();
 
-        userRepository.updateUser(user.id_usuario, user.username, user.password, user.nombre, user.apellido, user.telefono, user.direccion, user.fecha_registro);
+        userRepository.updateUser(user.id_usuario, user.username, user.password, user.nombre, user.apellido, user.telefono, user.direccion);
 
         return new UserResponse("El usuario se registro exitosamente!");
     }
 
     // Obtener Segun el ID
-    public UserDTO getUser(Long id) {
+    public UserDTO getUser(long id) {
         User user = userRepository.findById(id).orElse(null);
 
-        if (user == null) {
+        if (user != null) {
             UserDTO userDTO = UserDTO.builder()
-                    .id_usuario(user.id_usuario)
                     .username(user.username)
-                    .password(user.password)
                     .nombre(user.nombre)
                     .apellido(user.apellido)
                     .telefono(user.telefono)
                     .direccion(user.direccion)
-                    .fecha_registro(user.fecha_registro)
                     .build();
             return userDTO;
         }

@@ -1,14 +1,16 @@
 package com.example.DonnaPizza.Auth;
 
-import com.example.DonnaPizza.Jwt.JwtService;
-import com.example.DonnaPizza.MVC.User.Role;
-import com.example.DonnaPizza.MVC.User.User;
-import com.example.DonnaPizza.MVC.User.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.DonnaPizza.Jwt.JwtService;
+import com.example.DonnaPizza.MVC.User.Role;
+import com.example.DonnaPizza.MVC.User.User;
+import com.example.DonnaPizza.MVC.User.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +22,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        System.out.println("Request recibido: " + request);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsernamelogin(), request.getPasswordlogin()));
+        User user = userRepository.findByUsername(request.getUsernamelogin()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)

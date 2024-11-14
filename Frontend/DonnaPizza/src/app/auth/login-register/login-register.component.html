@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-center align-items-center flex-column vh-100">
+    <div class="container my-5 mx-0">
+        <p class="text-center h1">Regístrate Aquí</p>
+        <p class="text-danger">{{ errorMessage }}</p>
+
+        <form [formGroup]="registerForm">
+
+            <!-- Campo Nombre -->
+            <div class="mb-3">
+                <label for="inputNombre" class="form-label">Nombre</label>
+                <input formControlName="nombre" type="text" class="form-control" id="inputNombre">
+                <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                    <div *ngIf="nombre?.errors?.['required']">Su Nombre es requerido!</div>
+                </div>
+            </div>
+
+            <!-- Campo Apellido -->
+            <div class="mb-3">
+                <label for="inputApellido" class="form-label">Apellido</label>
+                <input formControlName="apellido" type="text" class="form-control" id="inputApellido">
+                <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)" class="text-danger">
+                    <div *ngIf="apellido?.errors?.['required']">Su Apellido es requerido!</div>
+                </div>
+            </div>
+
+            <!-- Campo Email -->
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input formControlName="username" type="email" class="form-control" id="inputEmail">
+                <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-danger">
+                    <div *ngIf="username?.errors?.['required']">El Email es requerido!</div>
+                    <div *ngIf="username?.errors?.['email']">Ingrese un Email válido!</div>
+                </div>
+            </div>
+
+            <!-- Campo Teléfono -->
+            <div class="mb-3">
+                <label for="inputTelefono" class="form-label">Teléfono</label>
+                <input formControlName="telefono" type="text" class="form-control" id="inputTelefono">
+                <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)" class="text-danger">
+                    <div *ngIf="telefono?.errors?.['required']">Su Teléfono es requerido!</div>
+                    <div *ngIf="telefono?.errors?.['pattern']">El Teléfono debe contener solo números!</div>
+                </div>
+            </div>
+
+            <!-- Campo Direccion -->
+            <div class="mb-3">
+                <label for="inputDireccion" class="form-label">Dirección</label>
+                <input formControlName="direccion" type="text" class="form-control" id="inputDireccion">
+                <div *ngIf="direccion?.invalid && (direccion?.dirty || direccion?.touched)" class="text-danger">
+                    <div *ngIf="direccion?.errors?.['required']">Su Dirección es requerida!</div>
+                </div>
+            </div>
+
+
+            <!-- Campo Contraseña -->
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+                <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-danger">
+                    <div *ngIf="password?.errors?.['required']">La Contraseña es requerida!</div>
+                    <div *ngIf="password?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" (click)="register()" class="btn btn-primary">Registrar</button>
+        </form>
+    </div>
+
+    <div class="container my-5 mx-0">
+        <p class="text-center h1">Iniciar Sesión</p>
+        <p class="text-danger">{{loginError}}</p>
+        <form [formGroup]="loginForm">
+            <div class="mb-4">
+                <label for="inputEmailLogin" class="form-label">Email</label>
+                <input formControlName="usernamelogin" type="email" class="form-control" id="inputEmailLogin">
+                <div *ngIf="usernamelogin?.invalid && (usernamelogin?.dirty || usernamelogin?.touched)"
+                    class="text-danger">
+                    <div *ngIf="usernamelogin?.errors?.['required']">El Email es requerido!</div>
+                    <div *ngIf="usernamelogin?.errors?.['email']">Ingrese un Email válido!</div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="inputPasswordLogin" class="form-label">Contraseña</label>
+                <input formControlName="passwordlogin" type="password" class="form-control" id="inputPasswordLogin"
+                    placeholder="Ingrese su contraseña">
+                <div *ngIf="passwordlogin?.invalid && (passwordlogin?.dirty || passwordlogin?.touched)" class="text-danger">
+                    <div *ngIf="passwordlogin?.errors?.['required']">La Contraseña es requerida!</div>
+                    <div *ngIf="passwordlogin?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" (click)="login()" class="btn btn-primary mx-1">Iniciar Sesión</button>
+            </div>
+        </form>
+    </div>
+
+</div>
