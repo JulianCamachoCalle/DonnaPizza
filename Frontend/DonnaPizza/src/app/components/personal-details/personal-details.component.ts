@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user/user.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/auth/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-personal-details',
@@ -20,7 +21,7 @@ export class PersonalDetailsComponent implements OnInit {
   registerForm!: FormGroup;
 
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private loginService: LoginService) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) {
     // Escuchar el userId desde el LoginService
     this.loginService.userId.subscribe({
       next: (userId) => {
@@ -104,6 +105,11 @@ export class PersonalDetailsComponent implements OnInit {
       password: ['', Validators.required],
     })
 
+  }
+
+  logOut() {
+    this.loginService.logOut();
+    this.router.navigate(['/login'])
   }
 
 }
