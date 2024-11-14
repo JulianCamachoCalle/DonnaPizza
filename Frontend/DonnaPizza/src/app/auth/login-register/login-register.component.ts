@@ -9,7 +9,7 @@ import { LoginRequest } from '../../services/auth/login.Request';
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterOutlet],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
 })

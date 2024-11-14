@@ -48,14 +48,10 @@ export class LoginService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      console.log("Se ha producido un error", error.error)
-    } else {
-      console.log('Retorno', error)
-    }
-    return throwError(() => new Error('Algo salio mal'))
+    console.error('Error:', error);
+    return throwError(() => new Error('Algo salió mal: ' + error.message));
   }
-
+  
   get userData():Observable<String> {
     return this.currentUserData.asObservable();
   }

@@ -1,18 +1,21 @@
 package com.example.DonnaPizza.Jwt;
 
-import com.example.DonnaPizza.MVC.User.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.function.Function;
+import com.example.DonnaPizza.MVC.User.User;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
@@ -33,7 +36,6 @@ public class JwtService {
                 .claim("apellido", user.getApellido())
                 .claim("telefono", user.getTelefono())
                 .claim("direccion", user.getDireccion())
-                .claim("fecha_registro", user.getFecha_registro().toString())
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+1000*60*24))
