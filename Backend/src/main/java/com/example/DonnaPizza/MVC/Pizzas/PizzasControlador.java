@@ -26,14 +26,14 @@ public class PizzasControlador {
     // Agregar
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Pizzas create(@RequestBody Pizzas pizza) {
-        return pizzasService.create(pizza);
+    public Pizzas create(@RequestBody PizzaDTO pizzaDTO) {
+        return pizzasService.create(pizzaDTO);
     }
 
     // Actualizar
     @PutMapping("{id_pizza}")
-    public Pizzas update(@PathVariable Long id_pizza, @RequestBody Pizzas pizza) {
-        return pizzasService.update(id_pizza, pizza);
+    public Pizzas update(@PathVariable Long id_pizza, @RequestBody PizzaDTO pizzaDTO) {
+        return pizzasService.update(id_pizza, pizzaDTO);
     }
 
 

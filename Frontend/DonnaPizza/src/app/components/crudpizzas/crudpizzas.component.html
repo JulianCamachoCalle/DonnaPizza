@@ -1,0 +1,43 @@
+<div class="container-fluid d-flex flex-column my-4 p-3 ">
+    <h1 class="mb-5 text-center">Lista de Pizzas</h1>
+
+    <div class="text-start">
+        <button class="btn btn-primary" routerLink="/new-pizza">
+            Agregar Pizza
+        </button>
+    </div>
+    <!-- Tabla para listar pizzas -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Disponible</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(pizza of pizzas; track pizza.id) {
+            <tr>
+                <td>{{pizza.id_pizza}}</td>
+                <td>{{pizza.nombre}}</td>
+                <td>{{pizza.descripcion}}</td>
+                <td>{{pizza.precio}}</td>
+                <td>{{pizza.disponible}}</td>
+                <td class="text-end">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" [routerLink]="['/', pizza.id_pizza, 'edit']">
+                            Editar
+                        </button>
+                        <button class="btn btn-danger" (click)="deletePizza(pizza)">
+                            Eliminar
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

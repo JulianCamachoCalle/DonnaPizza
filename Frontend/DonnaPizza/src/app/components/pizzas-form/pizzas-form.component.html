@@ -1,0 +1,58 @@
+<div class="container-fluid p-0 principal" style="background-image: url('assets/img/fondo-contacto.jpg');">
+    <div class="container">
+        <div class="row justify-content-center contenedor-form m-0">
+            <h2 class="d-flex justify-content-center text-light titulo m-0">
+                @if (pizza){
+                Editar
+                } @else {
+                Nueva
+                }Pizza
+            </h2>
+            @if(form) {
+            <div class="formulario m-0">
+                <form [formGroup]="form" (ngSubmit)="save()">
+                    <div class="mb-3">
+                        <label for="nombre" class="fw-bold text-dark mb-2">Nombre</label>
+                        <input type="text" name="nombre" id="nombre" placeholder="Nombre" class="form-control"
+                            formControlName="nombre">
+                        @if (form.get('nombre')?.hasError('required')) {
+                        <p class="invalid-feedback d-block">El nombre es obligatorio</p>
+                        }
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="fw-bold text-dark mb-2">Descripción</label>
+                        <input type="text" name="descripcion" id="descripcion" placeholder="Descripción"
+                            class="form-control" formControlName="descripcion">
+                        @if (form.get('descripcion')?.hasError('required')) {
+                        <p class="invalid-feedback d-block">La descripcion es obligatoria</p>
+                        }
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="fw-bold text-dark mb-2">Precio</label>
+                        <input type="text" name="precio" id="precio" placeholder="Precio" class="form-control"
+                            formControlName="precio">
+                        @if (form.get('precio')?.hasError('required')) {
+                        <p class="invalid-feedback d-block">El precio es obligatorio</p>
+                        }
+                        @if (form.get('precio')?.hasError('pattern')) {
+                        <p class="invalid-feedback d-block">El precio debe ser un número</p>
+                        }
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-light" routerLink="/admin/pizzas">
+                            Cancelar
+                        </button>
+                        <button class="btn btn-primary ms-2">
+                            @if (pizza){
+                            Actualizar
+                            } @else {
+                            Crear
+                            }Pizza
+                        </button>
+                    </div>
+                </form>
+            </div>
+            }
+        </div>
+    </div>
+</div>
