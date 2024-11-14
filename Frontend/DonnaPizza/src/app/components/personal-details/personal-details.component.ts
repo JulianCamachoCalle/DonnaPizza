@@ -5,6 +5,7 @@ import { UserService } from '../../services/user/user.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/auth/login.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-personal-details',
@@ -21,25 +22,104 @@ export class PersonalDetailsComponent implements OnInit {
   registerForm!: FormGroup;
 
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) { }
+
+  get username() {
+    return this.registerForm.get('username');
+  }
+
+  get nombre() {
+    return this.registerForm.get('nombre');
+  }
+
+  get apellido() {
+    return this.registerForm.get('apellido');
+  }
+
+  get telefono() {
+    return this.registerForm.get('telefono');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
+  }
+
+  get direccion() {
+    return this.registerForm.get('direccion');
+  }
+
+  savePersonalDetailsData() {
+    if (this.registerForm.valid) {
+      this.userService.updateUser(this.registerForm.value as unknown as User).subscribe({
+        next: () => {
+          // Cambiar el estado de editMode a false, ya que los cambios se guardaron
+          this.editMode = false;
+          // Actualizar el objeto user con los nuevos valores del formulario
+          this.user = this.registerForm.value as unknown as User;
+
+          // Mostrar mensaje de éxito con SweetAlert2
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'Los datos se han actualizado correctamente.',
+            confirmButtonText: 'Aceptar'
+          });
+        },
+        error: (errorData) => {
+          console.error(errorData);
+          // Mostrar mensaje de error si algo sale mal
+          Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'Hubo un problema al actualizar los datos.',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+    } else {
+      // Si el formulario no es válido, muestra un mensaje para que el usuario lo complete
+      this.registerForm.markAllAsTouched();
+      Swal.fire({
+        icon: 'warning',
+        title: '¡Campos inválidos!',
+        text: 'Por favor, completa todos los campos correctamente.',
+        confirmButtonText: 'Aceptar'
+      });
+    }
+  }
+
+
+  ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      id_usuario: [''],
+      nombre: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
+      apellido: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
+      username: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required, Validators.pattern(/^9\d{8}$/)]],
+      direccion: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$&*.]).{8,}$/)]],
+    });
+
     // Escuchar el userId desde el LoginService
     this.loginService.userId.subscribe({
       next: (userId) => {
         if (userId !== null) {
-          // Obtener datos del usuario al loguearse
           this.userService.getUser(Number(userId)).subscribe({
             next: (userData) => {
               this.user = userData;
-              this.registerForm.controls['id_usuario'].setValue(userData.id_usuario.toString());
-              this.registerForm.controls['username'].setValue(userData.username);
-              this.registerForm.controls['nombre'].setValue(userData.nombre);
-              this.registerForm.controls['apellido'].setValue(userData.apellido);
-              this.registerForm.controls['telefono'].setValue(userData.telefono);
-              this.registerForm.controls['direccion'].setValue(userData.direccion);
-              this.registerForm.controls['password'].setValue(userData.password);
+              this.registerForm.patchValue({
+                id_usuario: userData.id_usuario,
+                username: userData.username,
+                nombre: userData.nombre,
+                apellido: userData.apellido,
+                telefono: userData.telefono,
+                direccion: userData.direccion,
+                password: userData.password,
+              });
             },
             error: (errorData) => {
-              this.errorMessage = errorData;
+              this.errorMessage = 'Error al cargar los datos del usuario. Inténtalo de nuevo más tarde.';
+              console.error(errorData);
             },
             complete: () => {
               console.log("User Data ok");
@@ -55,61 +135,10 @@ export class PersonalDetailsComponent implements OnInit {
         this.userLoginOn = userLoginOn;
       }
     });
-
-  }
-
-  get username() {
-    return this.registerForm.controls['username'];
-  }
-
-  get nombre() {
-    return this.registerForm.controls['nombre'];
-  }
-
-  get apellido() {
-    return this.registerForm.controls['apellido'];
-  }
-
-  get telefono() {
-    return this.registerForm.controls['telefono'];
-  }
-
-  get password() {
-    return this.registerForm.controls['password'];
-  }
-
-  get direccion() {
-    return this.registerForm.controls['direccion'];
-  }
-
-  savePersonalDetailsData() {
-    if (this.registerForm.valid) {
-      this.userService.updateUser(this.registerForm.value as unknown as User).subscribe({
-        next: () => {
-          this.editMode = false;
-          this.user = this.registerForm.value as unknown as User;
-        },
-        error: (errorData) => console.error(errorData)
-      })
-    }
-  }
-
-  ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
-      id_usuario: [''],
-      username: ['', Validators.required],
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      telefono: ['', Validators.required],
-      direccion: ['', Validators.required],
-      password: ['', Validators.required],
-    })
-
   }
 
   logOut() {
     this.loginService.logOut();
     this.router.navigate(['/login'])
   }
-
 }

@@ -17,17 +17,79 @@
 
         <form *ngIf="userLoginOn && editMode" [formGroup]="registerForm">
             <div class="form-group row my-2">
-                <label for="inputUsername" class="col-sm-4 col-form-label texto">Nombre de Usuario</label>
+                <label for="inputNombre" class="col-sm-4 col-form-label">Nombre</label>
                 <div class="col-sm-8">
-                    <input type="text" formControlName="username" class="form-control" id="inputUsername">
+                    <input type="text" formControlName="nombre" class="form-control" id="inputNombre">
 
-                    <div *ngIf="username.invalid && (username.dirty || username.touched)" class="text-danger">
-                        <div *ngIf="username.errors?.['required']">
-                            El Nombre de Usuario es requerido!
+                    <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                        <div *ngIf="nombre?.errors?.['required']">Su Nombre es requerido!</div>
+                        <div *ngIf="nombre?.errors?.['pattern']">El Nombre solo debe contener letras!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="inputApellido" class="col-sm-4 col-form-label">Apellido</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="apellido" class="form-control" id="inputApellido">
+
+                    <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)" class="text-danger">
+                        <div *ngIf="apellido?.errors?.['required']">Su Apellido es requerido!</div>
+                        <div *ngIf="apellido?.errors?.['pattern']">El Apellido solo debe contener letras!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="inputTelefono" class="col-sm-4 col-form-label">Teléfono</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="telefono" class="form-control" id="inputTelefono">
+
+                    <div *ngIf="telefono?.invalid && (apellido?.dirty || telefono?.touched)" class="text-danger">
+                        <div *ngIf="telefono?.errors?.['required']">Su Teléfono es requerido!</div>
+                        <div *ngIf="telefono?.errors?.['pattern']">El Teléfono debe contener solo números y empezar
+                            con
+                            9!</div>
+                        <div *ngIf="telefono?.errors?.['phoneExists']">Este Teléfono ya está registrado!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="inputUsername" class="col-sm-4 col-form-label">Correo</label>
+                <div class="col-sm-8">
+                    <input type="email" formControlName="username" class="form-control" id="inputUsername">
+
+                    <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-danger">
+                        <div *ngIf="username?.errors?.['required']">El Correo es requerido!</div>
+                        <div *ngIf="username?.errors?.['email']">Ingrese un Correo válido!</div>
+                        <div *ngIf="username?.errors?.['emailExists']">Este Correo ya está registrado!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label for="inputDireccion" class="col-sm-4 col-form-label">Dirección</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="direccion" class="form-control" id="inputDireccion">
+
+                    <div *ngIf="direccion?.invalid && (direccion?.dirty || direccion?.touched)" class="text-danger">
+                        <div *ngIf="direccion?.errors?.['required']">
+                            Su Dirección es requerido!
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="form-group row my-4">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Contraseña</label>
+                <div class="col-sm-8">
+                    <input type="password" formControlName="password" class="form-control" id="inputPassword">
+
+                    <div *ngIf="password?.errors?.['required']">La Contraseña es requerida!</div>
+                    <div *ngIf="password?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
+                    </div>
+                    <div *ngIf="password?.errors?.['pattern']">La Contraseña debe tener al menos 1 letra mayúscula y
+                        1 carácter especial!</div>
+                </div>
+            </div>
+            <button type="submit" (click)="savePersonalDetailsData()" class="btn btn-dark mt-3">Guardar</button>
+            <a class="btn btn-danger mt-3" (click)="editMode=false">Cancelar</a>
         </form>
     </div>
 </div>

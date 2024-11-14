@@ -65,4 +65,13 @@ public class UserService {
         userRepository.save(user);
         return new UserResponse("El usuario se registro exitosamente!");
     }
+
+    public boolean checkUsernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean checkTelefonoExists(String telefono) {
+        return userRepository.existsByTelefono(telefono);
+    }
+    
 }
