@@ -1,100 +1,119 @@
-<div class="d-flex justify-content-center align-items-center flex-column vh-100">
-    <div class="container my-5 mx-0">
-        <p class="text-center h1">Regístrate Aquí</p>
-        <p class="text-danger">{{ errorMessage }}</p>
+<div class="container-fluid p-0 principal" style="background-image: url('assets/img/fondo-login.webp');">
+    <app-navbar></app-navbar>
+    <div class="main d-flex justify-content-center align-items-center flex-column vh-100">
+        <div class="contenedor position-relative rounded-5 overflow-hidden bg-light shadow-lg p-3 rounded"
+            id="contenedor">
+            <div class="form-contenedor position-absolute crear-cuenta">
+                <form id="registerForm" [formGroup]="registerForm"
+                    class="d-flex justify-content-center align-items-center flex-column px-4">
 
-        <form [formGroup]="registerForm">
+                    <h1>Create una Cuenta</h1>
+                    <!-- Campo Nombre -->
+                    <input formControlName="nombre" type="text" class="form-control my-1" placeholder="Nombre"
+                        id="inputNombre">
+                    <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
+                        <div *ngIf="nombre?.errors?.['required']">Su Nombre es requerido!</div>
+                        <div *ngIf="nombre?.errors?.['pattern']">El Nombre solo debe contener letras!</div>
+                    </div>
 
-            <!-- Campo Nombre -->
-            <div class="mb-3">
-                <label for="inputNombre" class="form-label">Nombre</label>
-                <input formControlName="nombre" type="text" class="form-control" id="inputNombre">
-                <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="text-danger">
-                    <div *ngIf="nombre?.errors?.['required']">Su Nombre es requerido!</div>
-                </div>
+                    <!-- Campo Apellido -->
+                    <input formControlName="apellido" type="text" class="form-control my-1" placeholder="Apellidos"
+                        id="inputApellido">
+                    <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)" class="text-danger">
+                        <div *ngIf="apellido?.errors?.['required']">Su Apellido es requerido!</div>
+                        <div *ngIf="apellido?.errors?.['pattern']">El Apellido solo debe contener letras!</div>
+                    </div>
+
+                    <!-- Campo Email -->
+                    <input formControlName="username" type="email" class="form-control my-1"
+                        placeholder="Corro Electronico" id="inputEmail">
+                    <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-danger">
+                        <div *ngIf="username?.errors?.['required']">El Email es requerido!</div>
+                        <div *ngIf="username?.errors?.['email']">Ingrese un Email válido!</div>
+                        <div *ngIf="username?.errors?.['emailExists']">Este Email ya está registrado!</div>
+                    </div>
+
+                    <!-- Campo Teléfono -->
+                    <input formControlName="telefono" type="text" class="form-control my-1" placeholder="Teléfono"
+                        id="inputTelefono">
+                    <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)" class="text-danger">
+                        <div *ngIf="telefono?.errors?.['required']">Su Teléfono es requerido!</div>
+                        <div *ngIf="telefono?.errors?.['pattern']">El Teléfono debe contener solo números y empezar con
+                            9!</div>
+                        <div *ngIf="telefono?.errors?.['phoneExists']">Este Teléfono ya está registrado!</div>
+                    </div>
+
+                    <!-- Campo Direccion -->
+                    <input formControlName="direccion" type="text" class="form-control my-1" placeholder="Dirección"
+                        id="inputDireccion">
+                    <div *ngIf="direccion?.invalid && (direccion?.dirty || direccion?.touched)" class="text-danger">
+                        <div *ngIf="direccion?.errors?.['required']">Su Dirección es requerida!</div>
+                    </div>
+
+
+                    <!-- Campo Contraseña -->
+                    <input formControlName="password" type="password" class="form-control my-1" placeholder="Contraseña"
+                        id="exampleInputPassword1">
+                    <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-danger">
+                        <div *ngIf="password?.errors?.['required']">La Contraseña es requerida!</div>
+                        <div *ngIf="password?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
+                        </div>
+                        <div *ngIf="password?.errors?.['pattern']">La Contraseña debe tener al menos 1 letra mayúscula y
+                            1 carácter especial!</div>
+                    </div>
+
+                    <div *ngIf="loginForm?.errors?.['invalidLogin']" class="text-danger">
+                        Las credenciales proporcionadas son incorrectas.
+                      </div>
+
+                    <button type="submit" (click)="register()"
+                        class="btn btn-login-register border px-3 py-2 my-2">Registrar</button>
+                </form>
             </div>
 
-            <!-- Campo Apellido -->
-            <div class="mb-3">
-                <label for="inputApellido" class="form-label">Apellido</label>
-                <input formControlName="apellido" type="text" class="form-control" id="inputApellido">
-                <div *ngIf="apellido?.invalid && (apellido?.dirty || apellido?.touched)" class="text-danger">
-                    <div *ngIf="apellido?.errors?.['required']">Su Apellido es requerido!</div>
-                </div>
+            <div class="form-contenedor position-absolute iniciar-sesion">
+                <form id="loginForm" [formGroup]="loginForm"
+                    class="d-flex justify-content-center align-items-center flex-column px-4">
+                    <h1>Inicia Sesion</h1>
+                    <input formControlName="usernamelogin" type="email" class="form-control my-1" id="inputEmailLogin"
+                        placeholder="Ingresa tu correo">
+                    <div *ngIf="usernamelogin?.invalid && (usernamelogin?.dirty || usernamelogin?.touched)"
+                        class="text-danger">
+                        <div *ngIf="usernamelogin?.errors?.['required']">El Email es requerido!</div>
+                        <div *ngIf="usernamelogin?.errors?.['email']">Ingrese un Email válido!</div>
+                    </div>
+                    <input formControlName="passwordlogin" type="password" class="form-control my-1"
+                        id="inputPasswordLogin" placeholder="Ingresa tu contraseña">
+                    <div *ngIf="passwordlogin?.invalid && (passwordlogin?.dirty || passwordlogin?.touched)"
+                        class="text-danger">
+                        <div *ngIf="passwordlogin?.errors?.['required']">La Contraseña es requerida!</div>
+                        <div *ngIf="passwordlogin?.errors?.['minlength']">La Contraseña debe tener al menos 8
+                            caracteres!
+                        </div>
+                    </div>
+                    <a href="#" class="my-3">¿Olvidaste tu contraseña?</a>
+                    <button type="submit" (click)="login()" class="btn btn-login-register border px-3 py-2">Iniciar
+                        Sesión</button>
+                </form>
             </div>
 
-            <!-- Campo Email -->
-            <div class="mb-3">
-                <label for="inputEmail" class="form-label">Email</label>
-                <input formControlName="username" type="email" class="form-control" id="inputEmail">
-                <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-danger">
-                    <div *ngIf="username?.errors?.['required']">El Email es requerido!</div>
-                    <div *ngIf="username?.errors?.['email']">Ingrese un Email válido!</div>
-                </div>
-            </div>
-
-            <!-- Campo Teléfono -->
-            <div class="mb-3">
-                <label for="inputTelefono" class="form-label">Teléfono</label>
-                <input formControlName="telefono" type="text" class="form-control" id="inputTelefono">
-                <div *ngIf="telefono?.invalid && (telefono?.dirty || telefono?.touched)" class="text-danger">
-                    <div *ngIf="telefono?.errors?.['required']">Su Teléfono es requerido!</div>
-                    <div *ngIf="telefono?.errors?.['pattern']">El Teléfono debe contener solo números!</div>
-                </div>
-            </div>
-
-            <!-- Campo Direccion -->
-            <div class="mb-3">
-                <label for="inputDireccion" class="form-label">Dirección</label>
-                <input formControlName="direccion" type="text" class="form-control" id="inputDireccion">
-                <div *ngIf="direccion?.invalid && (direccion?.dirty || direccion?.touched)" class="text-danger">
-                    <div *ngIf="direccion?.errors?.['required']">Su Dirección es requerida!</div>
-                </div>
-            </div>
-
-
-            <!-- Campo Contraseña -->
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
-                <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-danger">
-                    <div *ngIf="password?.errors?.['required']">La Contraseña es requerida!</div>
-                    <div *ngIf="password?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
+            <div class="cambiar-contenedor position-absolute overflow-hidden">
+                <div class="cambiar">
+                    <div
+                        class="cambiar-panel cambiar-izquierda d-flex justify-content-center align-items-center flex-column position-absolute">
+                        <h1>Donna Pizza</h1>
+                        <p>Registra todos tus datos</p>
+                        <button class="ocultar btn btn-cambio border px-3 py-2" id="login">Iniciar Sesion</button>
+                    </div>
+                    <div
+                        class="cambiar-panel cambiar-derecha d-flex justify-content-center align-items-center flex-column position-absolute">
+                        <h1>Donna Pizza</h1>
+                        <p>Ingresa todos tus datos correspondientes</p>
+                        <button class="ocultar btn btn-cambio border px-3 py-2" id="register">Registrar</button>
                     </div>
                 </div>
             </div>
-
-            <button type="submit" (click)="register()" class="btn btn-primary">Registrar</button>
-        </form>
+        </div>
     </div>
-
-    <div class="container my-5 mx-0">
-        <p class="text-center h1">Iniciar Sesión</p>
-        <p class="text-danger">{{loginError}}</p>
-        <form [formGroup]="loginForm">
-            <div class="mb-4">
-                <label for="inputEmailLogin" class="form-label">Email</label>
-                <input formControlName="usernamelogin" type="email" class="form-control" id="inputEmailLogin">
-                <div *ngIf="usernamelogin?.invalid && (usernamelogin?.dirty || usernamelogin?.touched)"
-                    class="text-danger">
-                    <div *ngIf="usernamelogin?.errors?.['required']">El Email es requerido!</div>
-                    <div *ngIf="usernamelogin?.errors?.['email']">Ingrese un Email válido!</div>
-                </div>
-            </div>
-            <div class="mb-4">
-                <label for="inputPasswordLogin" class="form-label">Contraseña</label>
-                <input formControlName="passwordlogin" type="password" class="form-control" id="inputPasswordLogin"
-                    placeholder="Ingrese su contraseña">
-                <div *ngIf="passwordlogin?.invalid && (passwordlogin?.dirty || passwordlogin?.touched)" class="text-danger">
-                    <div *ngIf="passwordlogin?.errors?.['required']">La Contraseña es requerida!</div>
-                    <div *ngIf="passwordlogin?.errors?.['minlength']">La Contraseña debe tener al menos 8 caracteres!
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center">
-                <button type="submit" (click)="login()" class="btn btn-primary mx-1">Iniciar Sesión</button>
-            </div>
-        </form>
-    </div>
-
 </div>
+<app-footer></app-footer>

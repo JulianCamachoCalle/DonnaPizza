@@ -42,4 +42,16 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.updateUser(userRequest));
     }
+
+    @GetMapping("/check-email/{email}")
+    public ResponseEntity<Boolean> checkEmailExists(@PathVariable String email) {
+        boolean exists = userService.checkUsernameExists(email);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/check-telefono/{telefono}")
+    public ResponseEntity<Boolean> checkTelefonoExists(@PathVariable String telefono) {
+        boolean exists = userService.checkTelefonoExists(telefono);
+        return ResponseEntity.ok(exists);
+    }
 }

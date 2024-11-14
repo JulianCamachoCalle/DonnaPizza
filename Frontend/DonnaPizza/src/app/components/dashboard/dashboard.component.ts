@@ -3,11 +3,13 @@ import { LoginService } from '../../services/auth/login.service';
 import { Router } from '@angular/router';
 import { PersonalDetailsComponent } from "../personal-details/personal-details.component";
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from "../../navbar/navbar.component";
+import { FooterComponent } from "../../footer/footer.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, PersonalDetailsComponent],
+  imports: [CommonModule, PersonalDetailsComponent, NavbarComponent, FooterComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

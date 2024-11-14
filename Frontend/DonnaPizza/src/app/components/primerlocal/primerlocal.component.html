@@ -1,24 +1,28 @@
-<div class="container-fluid d-flex justify-content-center align-items-center flex-column" id="container-locales"
+<div class="container-fluid p-0" id="container-locales"
     style="background-image: url('assets/img/fondo-locales.jpg');">
-    <div class="titulo-locales my-3 d-flex justify-content-center align-items-center">
-        <span>CONTAMOS CON 2 LOCALES</span>
-    </div>
-    <div class="botones-locales row">
-        <div class="col-sm-6 col-12 d-flex justify-content-center align-items-center">
-            <a class="btn btn-danger" id="primer-local" routerLink="/primerlocal">Primer Local</a>
+    <app-navbar></app-navbar>
+    <div class="container-fluid d-flex justify-content-center align-items-center flex-column">
+        <div class="titulo-locales">
+            <span>CONTAMOS CON 2 LOCALES</span>
         </div>
-        <div class="col-sm-6 col-12 d-flex justify-content-center align-items-center">
-            <a class="btn btn-success" id="segundo-local" routerLink="/segundolocal">Segundo Local</a>
+        <div class="botones-locales row">
+            <div class="col-sm-6 col-12 d-flex justify-content-center align-items-center">
+                <a class="btn btn-danger" id="primer-local" routerLink="/primerlocal">Primer Local</a>
+            </div>
+            <div class="col-sm-6 col-12 d-flex justify-content-center align-items-center">
+                <a class="btn btn-success" id="segundo-local" routerLink="/segundolocal">Segundo Local</a>
+            </div>
         </div>
-    </div>
-    <div class="map-locales my-3 mx-3 ratio ratio-1x1">
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.0559598623336!2d-77.09347322312587!3d-12.039668541772325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105cf9d7a4ae175%3A0x249b55302d8290ba!2sDonna%20Pizza!5e0!3m2!1ses-419!2spe!4v1727151028891!5m2!1ses-419!2spe"
-            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-    <div class="descripcion-locales container d-flex justify-content-center align-items-center flex-column">
-        <span>1° de Mayo 804 - Carmen de la Legua</span>
-        <span>Teléfono: 559-0914</span>
-        <span>Celular: 929-569-314</span>
+        <div class="map-locales my-3 mx-3 ratio ratio-1x1">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.0559598623336!2d-77.09347322312587!3d-12.039668541772325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105cf9d7a4ae175%3A0x249b55302d8290ba!2sDonna%20Pizza!5e0!3m2!1ses-419!2spe!4v1727151028891!5m2!1ses-419!2spe"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="descripcion-locales container d-flex justify-content-center align-items-center flex-column">
+            <span>1° de Mayo 804 - Carmen de la Legua</span>
+            <span>Teléfono: 559-0914</span>
+            <span>Celular: 929-569-314</span>
+        </div>
     </div>
 </div>
+<app-footer></app-footer>

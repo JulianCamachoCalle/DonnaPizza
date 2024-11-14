@@ -1,1 +1,45 @@
-<p>carta works!</p>
+<div class="container-fluid  p-0" id="container-principal" style="background-image: url('assets/img/fondo-principal.jpg');">
+    <app-navbar></app-navbar>
+    <!-- Icono flotante del carrito -->
+    <div class="d-flex justify-content-center" id="cart-icon" onclick="toggleCartModal()">
+        <img src="img/icono-pizza.jpg" alt="Carrito de Compras" class="img-fluid">
+    </div>
+
+    <!-- Modal del carrito -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cart-items" class="list-group"></ul>
+                </div>
+                <div class="modal-footer">
+                    <a href="/fromclient" class="btn btn-success">Proceder al Pago</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+        <form action="#" method="GET" class="d-flex mb-5">
+            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+            <select class="form-select me-2" name="categoria">
+                <option value="entrada">Entrada</option>
+                <option value="pizza">Pizza</option>
+                <option value="pastas">Pastas</option>
+            </select>
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row g-2" id="pizza-container">
+                <app-pizza-list-component></app-pizza-list-component>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
