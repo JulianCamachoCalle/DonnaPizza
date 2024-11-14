@@ -7,8 +7,11 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,21 +30,24 @@ public class PizzasService {
 
     // Obtener por ID
     public Pizzas findById(Long id_pizza) {
-        return pizzasRepository.findById(id_pizza).orElse(null);
+        return pizzasRepository.findById(id_pizza).orElseThrow(ResourceNotFoundException::new);
     }
 
     // Agregar
-    public Pizzas create(Pizzas pizza) {
-        return pizzasRepository.save(pizza);
+    public Pizzas create(PizzaDTO pizzaDTO) {
+        ModelMapper mapper = new ModelMapper();
+        Pizzas pizzas = mapper.map(pizzaDTO, Pizzas.class);
+        pizzas.getDisponible();
+        return pizzasRepository.save(pizzas);
     }
 
     // Actualizar
-    public Pizzas update(Long id_pizza, Pizzas pizza) {
+    public Pizzas update(Long id_pizza, PizzaDTO pizzaDTO) {
         Pizzas pizzasFromDB = findById(id_pizza);
 
-        pizzasFromDB.setNombre(pizza.getNombre());
-        pizzasFromDB.setDescripcion(pizza.getDescripcion());
-        pizzasFromDB.setPrecio(pizza.getPrecio());
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(pizzaDTO, pizzasFromDB);
+        pizzasFromDB.getDisponible();
 
         return pizzasRepository.save(pizzasFromDB);
     }

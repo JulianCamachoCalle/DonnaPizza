@@ -11,24 +11,24 @@ export class PizzaService {
 
   constructor(private http: HttpClient) { }
 
-  listarPizzas(): Observable<Pizza[]> {
+  list() {
     return this.http.get<Pizza[]>(environment.urlApiPizzas);
   }
 
-  guardarPizza(pizza: Pizza): Observable<any> {
-    return this.http.post(environment.urlApiPizzas, pizza);
-  }
-
-  cargarDatosPizza(id: number): Observable<Pizza> {
+  get(id: number) {
     return this.http.get<Pizza>(`${environment.urlApiPizzas}/${id}`);
   }
 
-  actualizarPizza(pizza: Pizza): Observable<any> {
-    return this.http.put(`${environment.urlApiPizzas}/${pizza.id_pizza}`, pizza);
+  create(pizza: Pizza) {
+    return this.http.post<Pizza>(environment.urlApiPizzas, pizza)
   }
 
-  eliminarPizza(id: number): Observable<any> {
-    return this.http.delete(`${environment.urlApiPizzas}/${id}`);
+  update(id: number, pizza: Pizza) {
+    return this.http.put<Pizza>(`${environment.urlApiPizzas}/${id}`, pizza);
+  }
+
+  delete(id: number) {
+    return this.http.delete<void>(`${environment.urlApiPizzas}/${id}`);
   }
 
   exportarExcel(): void {

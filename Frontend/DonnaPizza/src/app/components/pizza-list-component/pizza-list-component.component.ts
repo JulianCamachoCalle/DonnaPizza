@@ -1,39 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PizzaService } from '../../services/pizza/pizza.service';
-import { Pizza } from '../../models/pizza.model';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from '../../../environments/environment.development';
+import { Pizza } from '../../models/pizza.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-pizza-list-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './pizza-list-component.component.html',
   styleUrl: './pizza-list-component.component.css'
 })
 export class PizzaListComponentComponent implements OnInit {
-  pizzas: Pizza[] = [];
-  selectedPizza?: Pizza;
+  private pizzasService = inject(PizzaService)
 
-  constructor(private pizzaService: PizzaService, private modalService: NgbModal) { }
+  pizzas: Pizza[] = [];
 
   ngOnInit(): void {
-    this.loadPizzas();
+    this.loadAll();
   }
 
-  loadPizzas(): void {
-    this.pizzaService.getPizzas().subscribe((data: Pizza[]) => {
-      this.pizzas = data;
-    });
-  }
-
-  openPizzaModal(pizzaId: number, content: any): void {
-    this.pizzaService.getPizzaById(pizzaId).subscribe((pizza: Pizza) => {
-      this.selectedPizza = pizza;
-      this.modalService.open(content);
-    });
+  loadAll() {
+    this.pizzasService.list().subscribe(pizzas => {
+        this.pizzas = pizzas;
+      })
   }
 
   onImageError(event: any): void {

@@ -6,6 +6,8 @@ import { PrimerlocalComponent } from './components/primerlocal/primerlocal.compo
 import { SegundolocalComponent } from './components/segundolocal/segundolocal.component';
 import { CartaComponent } from './components/carta/carta.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
+import { CRUDPizzasComponent } from './components/crudpizzas/crudpizzas.component';
+import { PizzasFormComponent } from './components/pizzas-form/pizzas-form.component';
 
 export const routes: Routes = [
     { path: '', component: InicioComponent },
@@ -15,4 +17,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginRegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'admin/email', component: SendEmailComponent },
+    { path: 'admin/pizzas', component: CRUDPizzasComponent},
+    { path: 'new-pizza', component: PizzasFormComponent},
+    { path: ':id/edit', component: PizzasFormComponent},
 ];
