@@ -1,0 +1,41 @@
+<!-- email.component.html -->
+<div class="container-fluid mt-4">
+    <h1>Send Email</h1>
+    <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#emailModal">
+        New Email
+    </button>
+    <p>{{ message }}</p>
+</div>
+
+<!-- Modal for email form -->
+<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailModalLabel">New Email</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label>Para</label>
+                        <input formControlName="receptor" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input formControlName="proposito" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea formControlName="mensaje" class="form-control" cols="30" rows="10"
+                            required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Archivo</label>
+                        <input type="file" (change)="onFileSelected($event)" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

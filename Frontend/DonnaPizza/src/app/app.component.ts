@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CartaComponent } from './components/carta/carta.component';
 import { PrimerlocalComponent } from './components/primerlocal/primerlocal.component';
 import { SegundolocalComponent } from './components/segundolocal/segundolocal.component';
+import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { SegundolocalComponent } from './components/segundolocal/segundolocal.co
   imports: [RouterOutlet, RouterLink, CommonModule, ReactiveFormsModule, HttpClientModule, NavbarComponent, FooterComponent, CartaComponent, PrimerlocalComponent, SegundolocalComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

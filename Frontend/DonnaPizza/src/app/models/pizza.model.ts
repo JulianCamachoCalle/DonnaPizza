@@ -5,4 +5,5 @@ export interface Pizza {
     descripcion: string;
     precio: number;
     precioFamiliar?: number;
+    disponible: number;
 }

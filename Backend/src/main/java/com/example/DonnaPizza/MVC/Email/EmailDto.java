@@ -3,7 +3,6 @@ package com.example.DonnaPizza.MVC.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +15,4 @@ public class EmailDto {
 
     private String receiver;
 
-    private MultipartFile attachment;
 }

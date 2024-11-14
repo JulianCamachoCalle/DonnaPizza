@@ -1,11 +1,13 @@
 package com.example.DonnaPizza.MVC.Email;
 
-import org.apache.commons.mail.*;
+import java.io.File;
+
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.MultiPartEmail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 @Component
 public class EmailSenderUtil {
@@ -16,42 +18,39 @@ public class EmailSenderUtil {
     @Value("${spring.mail.password}")
     private String password;
 
-    public String sendEmail(EmailDto emailDto) {
+    public String sendEmail(EmailDto emailDto, MultipartFile file) {
         try {
             MultiPartEmail email = new MultiPartEmail();
             email.setHostName("smtp.gmail.com");
             email.setSmtpPort(587);
             email.setAuthenticator(new DefaultAuthenticator(username, password));
-            email.setSSLOnConnect(true);
+            email.setStartTLSEnabled(true);
             email.setFrom(username);
             email.setSubject(emailDto.getSubject());
             email.setMsg(emailDto.getMessage());
             email.addTo(emailDto.getReceiver());
-
+    
             // Adjuntar archivo si existe
-            MultipartFile attachmentFile = emailDto.getAttachment();
-            if (attachmentFile != null && !attachmentFile.isEmpty()) {
-                // Guardar el archivo en una ubicación temporal
-                File tempFile = File.createTempFile("temp", attachmentFile.getOriginalFilename());
-                attachmentFile.transferTo(tempFile);
-
-                // Configurar el adjunto usando la ruta temporal
+            if (file != null && !file.isEmpty()) {
+                File tempFile = File.createTempFile("temp", file.getOriginalFilename());
+                file.transferTo(tempFile);
+    
                 EmailAttachment attachment = new EmailAttachment();
                 attachment.setPath(tempFile.getAbsolutePath());
                 attachment.setDisposition(EmailAttachment.ATTACHMENT);
                 attachment.setDescription("Archivo adjunto");
-                attachment.setName(attachmentFile.getOriginalFilename());
+                attachment.setName(file.getOriginalFilename());
                 email.attach(attachment);
-
-                // Borrar el archivo temporal después de enviar el correo
+    
                 tempFile.deleteOnExit();
             }
-
+    
             email.send();
             return "Email Sent";
         } catch (Exception exception) {
             exception.printStackTrace();
-           return "Fail to send email";
+            return "Failed to send email";
         }
     }
+    
 }

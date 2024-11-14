@@ -5,6 +5,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { PrimerlocalComponent } from './components/primerlocal/primerlocal.component';
 import { SegundolocalComponent } from './components/segundolocal/segundolocal.component';
 import { CartaComponent } from './components/carta/carta.component';
+import { SendEmailComponent } from './components/send-email/send-email.component';
 
 export const routes: Routes = [
     { path: '', component: InicioComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
     { path: 'segundolocal', component: SegundolocalComponent },
     { path: 'login', component: LoginRegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'admin/email', component: SendEmailComponent },
 ];
