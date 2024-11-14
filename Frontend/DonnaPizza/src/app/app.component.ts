@@ -8,7 +8,6 @@ import { JwtInterceptorService } from './services/auth/jwt-interceptor.service';
 import { ErrorInterceptorService } from './services/auth/error-interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CartaComponent } from './components/carta/carta.component';
-import { LoginRegisterComponent } from './auth/login-register/login-register.component';
 import { PrimerlocalComponent } from './components/primerlocal/primerlocal.component';
 import { SegundolocalComponent } from './components/segundolocal/segundolocal.component';
 

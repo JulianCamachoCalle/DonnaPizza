@@ -1,10 +1,13 @@
-<div class="container-fluid d-flex justify-content-center align-items-center flex-column p-0">
-    <div class="container-fluid d-flex justify-content-center align-items-center flex-column" id="container-principal"
-        style="padding: 12.05rem 0; background-image: url('assets/img/fondo-principal.jpg');">
+<div class="container-fluid d-flex flex-column p-0" style="background-image: url('assets/img/fondo-principal.jpg');"
+    id="container-principal">
+    <app-navbar></app-navbar>
+    <div class="container-fluid d-flex justify-content-center align-items-center flex-column"
+        style="padding: 12.05rem 0;">
         <img class="img-fluid" src="assets/img/logo.png" alt="logo-principal">
         <a class="btn btn-success mt-2" routerLink="carta" role="button">PIDE AHORA</a>
     </div>
-    <div class="container-fluid d-flex flex-column align-items-center py-5" id="container-info" style="background-image: url('assets/img/fondo-secundario.jpg');">
+    <div class="container-fluid d-flex flex-column align-items-center py-5" id="container-info"
+        style="background-image: url('assets/img/fondo-secundario.jpg');">
         <div class="contenedor-titulo-platos mt-4">
             <p class="text-center">Disfruta Nuestros Platos</p>
         </div>
@@ -21,70 +24,71 @@
             </button>
         </div>
     </div>
-    <!--Nosotros-->
-    <div class="container-fluid container-fluid d-flex justify-content-center align-items-center flex-column"
-        id="container-nosotros">
-        <div class="row">
-            <div class="col-12 col-md-6 my-2 d-flex justify-content-center align-items-center flex-column">
-                <div class="texto-nosotros">
-                    <div class="titulo-nosotros mb-3">
-                        DONNA PIZZA
-                    </div>
-                    <div class="contenido-nosotros mt-3">
-                        Contamos con más de 15 años de experiencia en ofrecer auténtica comida italiana. Nos
-                        especializamos
-                        en una amplia variedad de pizzas y pastas, elaboradas con recetas tradicionales y los
-                        ingredientes
-                        más frescos.
-                    </div>
-                    <div class="extra-nosotros mt-1">
-                        “Nuestra pasión por la buena comida y el servicio al cliente nos distingue, convirtiendo cada
-                        visita
-                        en una experiencia culinaria única.”
-                    </div>
+</div>
+<!--Nosotros-->
+<div class="container-fluid container-fluid d-flex justify-content-center align-items-center flex-column"
+    id="container-nosotros">
+    <div class="row">
+        <div class="col-12 col-md-6 my-2 d-flex justify-content-center align-items-center flex-column">
+            <div class="texto-nosotros">
+                <div class="titulo-nosotros mb-3">
+                    DONNA PIZZA
                 </div>
-            </div>
-            <div class="col-12 col-md-6 my-2 d-flex justify-content-center align-items-center flex-column">
-                <div class="imagenes-nosotros">
-                    <div class="pizza-item1 d-flex justify-content-center align-items-center">
-                        <img class="img-fluid" src="assets/img/pizza-cuadro1.jpg" alt="Pizza 1">
-                    </div>
-                    <div class="pizza-item2 d-flex justify-content-center align-items-center">
-                        <img class="img-fluid" src="assets/img/pizza-cuadro2.jpg" alt="Pizza 2">
-                    </div>
-                    <div class="pizza-item3 d-flex justify-content-center align-items-center">
-                        <img class="img-fluid" src="assets/img/pizza-cuadro3.jpg" alt="Pizza 3">
-                    </div>
-                    <div class="pizza-item4 d-flex justify-content-center align-items-center">
-                        <img class="img-fluid" src="assets/img/pizza-cuadro4.jpeg" alt="Pizza 4">
-                    </div>
+                <div class="contenido-nosotros mt-3">
+                    Contamos con más de 15 años de experiencia en ofrecer auténtica comida italiana. Nos
+                    especializamos
+                    en una amplia variedad de pizzas y pastas, elaboradas con recetas tradicionales y los
+                    ingredientes
+                    más frescos.
+                </div>
+                <div class="extra-nosotros mt-1">
+                    “Nuestra pasión por la buena comida y el servicio al cliente nos distingue, convirtiendo cada
+                    visita
+                    en una experiencia culinaria única.”
                 </div>
             </div>
         </div>
-    </div>
-    <!--Fin Nosotros-->
-    <!--Contacto-->
-    <div class="container-fluid d-flex justify-content-center align-items-center flex-column" id="container-contacto" style="background-image: url('assets/img/fondo-contacto.jpg');">
-        <div class="form-container py-5 px-4" id="form-contacto">
-            <h2 class="text-left font-weight-bold mx-2 my-0" id="titulo-contacto">¡Estamos para Servirte!</h2>
-            <p class="text-left font-weight-bold mx-2" id="subtitulo-contacto">¿Tienes alguna pregunta o quieres hacer
-                un
-                pedido? ¡Estamos aquí para ayudarte! Escríbenos o llámanos, y con gusto te atenderemos.</p>
-            <form id="consultaForm" class="row" th:action="@{/dataformcontacto}" method="post">
-                <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                    <input type="text" class="form-control p-2" id="nombre" name="nombre">
+        <div class="col-12 col-md-6 my-2 d-flex justify-content-center align-items-center flex-column">
+            <div class="imagenes-nosotros">
+                <div class="pizza-item1 d-flex justify-content-center align-items-center">
+                    <img class="img-fluid" src="assets/img/pizza-cuadro1.jpg" alt="Pizza 1">
                 </div>
-                <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                    <input type="email" class="form-control p-2" id="email" name="emailDto">
+                <div class="pizza-item2 d-flex justify-content-center align-items-center">
+                    <img class="img-fluid" src="assets/img/pizza-cuadro2.jpg" alt="Pizza 2">
                 </div>
-                <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                    <input type="tel" class="form-control p-2" id="telefono" name="telefono">
+                <div class="pizza-item3 d-flex justify-content-center align-items-center">
+                    <img class="img-fluid" src="assets/img/pizza-cuadro3.jpg" alt="Pizza 3">
                 </div>
-                <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-center"
-                    id="input-contacto">
-                    <button type="submit" class="btn btn-danger p-2 w-100" id="boton-contacto">Solicitar Ayuda</button>
+                <div class="pizza-item4 d-flex justify-content-center align-items-center">
+                    <img class="img-fluid" src="assets/img/pizza-cuadro4.jpeg" alt="Pizza 4">
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+<!--Fin Nosotros-->
+<!--Contacto-->
+<div class="container-fluid d-flex justify-content-center align-items-center flex-column" id="container-contacto"
+    style="background-image: url('assets/img/fondo-contacto.jpg');">
+    <div class="form-container py-5 px-4" id="form-contacto">
+        <h2 class="text-left font-weight-bold mx-2 my-0" id="titulo-contacto">¡Estamos para Servirte!</h2>
+        <p class="text-left font-weight-bold mx-2" id="subtitulo-contacto">¿Tienes alguna pregunta o quieres hacer
+            un
+            pedido? ¡Estamos aquí para ayudarte! Escríbenos o llámanos, y con gusto te atenderemos.</p>
+        <form id="consultaForm" class="row" th:action="@{/dataformcontacto}" method="post">
+            <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
+                <input type="text" class="form-control p-2" id="nombre" name="nombre">
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
+                <input type="email" class="form-control p-2" id="email" name="emailDto">
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
+                <input type="tel" class="form-control p-2" id="telefono" name="telefono">
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-center" id="input-contacto">
+                <button type="submit" class="btn btn-danger p-2 w-100" id="boton-contacto">Solicitar Ayuda</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-footer></app-footer>

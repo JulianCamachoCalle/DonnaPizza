@@ -1,0 +1,41 @@
+<div class="container-fluid d-flex justify-content-center">
+    <div class="row g-2" id="pizza-container">
+        <!-- Las tarjetas de pizza se generarán aquí -->
+        <div *ngFor="let pizza of pizzas" class="col-12 col-md-6 col-xl-4 mb-4 d-flex justify-content-center">
+            <div class="card border border-0 bg-success mx-3 my-0" style="width: 21.875rem; height: 23.125rem;" id="plato">
+                <!-- Uso de property binding en src para asegurar que la imagen se cargue correctamente -->
+                <img [src]="'assets/img/pizzas/' + pizza.nombre + '.jpg'" class="card-img-top img-fluid"
+                    alt="{{ pizza.nombre }}" (error)="onImageError($event)">
+                <div class="card-body d-flex justify-content-center align-items-center flex-column m-0 p-0">
+                    <h5 class="card-title text-center m-0 p-0" id="nombre-plato">{{ pizza.nombre }}</h5>
+                    <p class="card-text text-center mb-1 mx-1 p-0" id="ingredientes-plato">{{ pizza.descripcion }}</p>
+                    <p class="card-text my-2 p-0" id="precio-plato">S/. {{ pizza.precio }}</p>
+                    <button class="btn btn-compra border border-0 px-2 py-1"
+                        (click)="openPizzaModal(pizza.id_pizza, modalContent)">
+                        Comprar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<ng-template #modalContent let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ selectedPizza?.nombre }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <img [src]="'assets/img/pizzas/' + (selectedPizza?.nombre || '') + '.jpg'" class="img-fluid"
+            alt="{{ selectedPizza?.nombre }}">
+        <p>{{ selectedPizza?.descripcion }}</p>
+        <p>Precio Familiar: S/. {{ selectedPizza?.precioFamiliar | number:'1.2-2' }}</p>
+        <p>Precio Media: S/. {{ selectedPizza?.precio | number:'1.2-2' }}</p>
+        <input type="number" id="modal-quantity" value="1" min="1">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cerrar</button>
+        <button type="button" class="btn btn-primary">Comprar</button>
+    </div>
+</ng-template>
