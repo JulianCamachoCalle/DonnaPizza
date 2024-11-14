@@ -3,7 +3,7 @@ package com.example.DonnaPizza.MVC.Reportes;
 import com.example.DonnaPizza.MVC.Cliente.ServicioCliente;
 import com.example.DonnaPizza.MVC.Documentos.ServicioDocumentos;
 import com.example.DonnaPizza.MVC.Ingredientes.ServicioIngredientes;
-import com.example.DonnaPizza.MVC.Pizzas.ServicioPizzas;
+import com.example.DonnaPizza.MVC.Pizzas.PizzasService;
 import com.example.DonnaPizza.MVC.PizzasFamiliares.ServicioPizzasFamiliares;
 import com.example.DonnaPizza.MVC.Promociones.ServicioPromociones;
 import com.example.DonnaPizza.MVC.PromocionesUsuarios.ServicioPromocionesUsuarios;
@@ -18,7 +18,7 @@ import java.io.IOException;
 public class ReportesControlador {
 
     @Autowired
-    private ServicioPizzas servicioPizzas;
+    private PizzasService servicioPizzas;
 
     @Autowired
     private ServicioCliente servicioCliente;

@@ -2,133 +2,54 @@ package com.example.DonnaPizza.MVC.Pizzas;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
-public class ServicioPizzas {
+public class PizzasService {
 
-    // Link al Respository
     private final PizzasRepository pizzasRepository;
 
-    HashMap<String, Object> datosPizzas;
-
-    @Autowired
-    public ServicioPizzas(PizzasRepository pizzasRepository) {
-        this.pizzasRepository = pizzasRepository;
-    }
-
-    // Obtener Todos
-    public List<Pizzas> getPizzas() {
-        return this.pizzasRepository.findAll();
+    // Obtener todos
+    public Iterable<Pizzas> findAll() {
+        return pizzasRepository.findAll();
     }
 
     // Obtener por ID
-    public Optional<Pizzas> getPizzaById(Long id) {
-        return pizzasRepository.findById(id);
+    public Pizzas findById(Long id_pizza) {
+        return pizzasRepository.findById(id_pizza).orElse(null);
     }
 
-    // Crear Nuevo
-    public ResponseEntity<Object> newPizza(Pizzas pizza) {
-        datosPizzas = new HashMap<>();
-
-        // Verificar Nombre Existente
-        Optional<Pizzas> resNom = pizzasRepository.findPizzaByNombre(pizza.getNombre());
-
-        // Mensaje de error Nombre
-        if (resNom.isPresent()) {
-            datosPizzas.put("error", true);
-            datosPizzas.put("message", "Ya existe un Producto con ese nombre");
-            return new ResponseEntity<>(
-                    datosPizzas,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Guardar Con Exito
-        datosPizzas.put("mensaje", "Se ha registrado el Producto");
-        pizzasRepository.save(pizza);
-        datosPizzas.put("data", pizza);
-        return new ResponseEntity<>(
-                datosPizzas,
-                HttpStatus.CREATED
-        );
+    // Agregar
+    public Pizzas create(Pizzas pizza) {
+        return pizzasRepository.save(pizza);
     }
 
     // Actualizar
-    public ResponseEntity<Object> updatePizza(Long id, Pizzas pizza) {
-        datosPizzas = new HashMap<>();
+    public Pizzas update(Long id_pizza, Pizzas pizza) {
+        Pizzas pizzasFromDB = findById(id_pizza);
 
-        // Buscar la pizza por ID
-        Optional<Pizzas> pizzasExistente = pizzasRepository.findById(id);
-        if (pizzasExistente.isEmpty()) {
-            datosPizzas.put("error", true);
-            datosPizzas.put("message", "Pizza no encontrada");
-            return new ResponseEntity<>(
-                    datosPizzas,
-                    HttpStatus.NOT_FOUND
-            );
-        }
+        pizzasFromDB.setNombre(pizza.getNombre());
+        pizzasFromDB.setDescripcion(pizza.getDescripcion());
+        pizzasFromDB.setPrecio(pizza.getPrecio());
 
-        // Verificar si el nombre ya esta en uso
-        Optional<Pizzas> resNom = pizzasRepository.findPizzaByNombre(pizza.getNombre());
-        if (resNom.isPresent() && !resNom.get().getId_pizza().equals(id)) {
-            datosPizzas.put("error", true);
-            datosPizzas.put("message", "Ya existe un Producto con ese nombre");
-            return new ResponseEntity<>(
-                    datosPizzas,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Actualizar Pizza
-        Pizzas pizzasActualizar = pizzasExistente.get();
-        pizzasActualizar.setNombre(pizza.getNombre());
-        pizzasActualizar.setDescripcion(pizza.getDescripcion());
-        pizzasActualizar.setPrecio(pizza.getPrecio());
-        pizzasActualizar.setDisponible(pizza.getDisponible());
-
-        pizzasRepository.save(pizzasActualizar);
-        datosPizzas.put("mensaje", "Se actualizó el Producto");
-        datosPizzas.put("data", pizza);
-
-        return new ResponseEntity<>(
-                datosPizzas,
-                HttpStatus.OK
-        );
+        return pizzasRepository.save(pizzasFromDB);
     }
 
     // Eliminar
-    public ResponseEntity<Object> deletePizza(Long id) {
-        datosPizzas = new HashMap<>();
-        boolean existePizza = this.pizzasRepository.existsById(id);
-        if (!existePizza) {
-            datosPizzas.put("error", true);
-            datosPizzas.put("message", "No existe un Producto con ese id");
-            return new ResponseEntity<>(
-                    datosPizzas,
-                    HttpStatus.CONFLICT
-            );
-        }
-        pizzasRepository.deleteById(id);
-        datosPizzas.put("mensaje", "Producto eliminado");
-        return new ResponseEntity<>(
-                datosPizzas,
-                HttpStatus.OK
-        );
+    public void delete(Long id_pizza) {
+        Pizzas pizzasFromDB = findById(id_pizza);
+        pizzasRepository.delete(pizzasFromDB);
     }
 
     // Generar Excel
