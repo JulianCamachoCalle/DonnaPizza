@@ -1,66 +1,47 @@
 package com.example.DonnaPizza.MVC.Documentos;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "api/v1/documentos")
-@CrossOrigin(origins = {"http://localhost:4200"})
 public class DocumentosControlador {
 
+    private final DocumentosService documentosService;
 
-    private final ServicioDocumentos servicioDocumentos;
-
-    @Autowired
-    public DocumentosControlador(ServicioDocumentos servicioDocumentos) {
-        this.servicioDocumentos = servicioDocumentos;
-    }
-
-
-    // Obtener Todos
+    // Obtener todos
     @GetMapping
-    public List<Documentos> getDocumentos() {
-        return this.servicioDocumentos.getDocumentos();
+    Iterable<Documentos> list() {
+        return documentosService.findAll();
     }
 
-    // Obtener por Id
-    @GetMapping("{documentoId}")
-    public ResponseEntity<Documentos> getDocumnetos(@PathVariable("documentoId") Long id) {
-        Optional<Documentos> documentos = this.servicioDocumentos.getDocumentosById(id);
-        if (documentos.isPresent()) {
-            return ResponseEntity.ok(documentos.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // Obtener por ID
+    @GetMapping("{id_documentos}")
+    public Documentos get(@PathVariable Long id_documentos) {
+        return documentosService.findById(id_documentos);
     }
 
-    // Registrar Nuevo
+    // Agregar
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Object> registrarDocumento(@RequestBody Documentos documentos) {
-        return this.servicioDocumentos.newDocumento(documentos);
+    public Documentos create(@RequestBody DocumentosDTO documentosDTO) {
+        return documentosService.create(documentosDTO);
     }
 
     // Actualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> actualizarDocumento(@PathVariable Long id, @RequestBody Documentos documentos) {
-        return this.servicioDocumentos.updateDocumentos(id,documentos);
+    @PutMapping("{id_documentos}")
+    public Documentos update(@PathVariable Long id_documentos, @RequestBody DocumentosDTO documentosDTO) {
+        return documentosService.update(id_documentos, documentosDTO);
     }
 
+
     // Eliminar
-    @DeleteMapping(path = "{documentoId}")
-    public ResponseEntity<Object> eliminarDocumento(@PathVariable("documentoId") Long id) {
-        return this.servicioDocumentos.deleteDocumento(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{id_documentos}")
+    public void delete(@PathVariable Long id_documentos) {
+        documentosService.delete(id_documentos);
     }
+
 }

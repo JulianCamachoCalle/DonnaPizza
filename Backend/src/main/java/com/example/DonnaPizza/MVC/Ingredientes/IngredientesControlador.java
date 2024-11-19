@@ -1,65 +1,47 @@
 package com.example.DonnaPizza.MVC.Ingredientes;
 
-import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "api/v1/ingredientes")
-@CrossOrigin(origins = {"http://localhost:4200"})
 public class IngredientesControlador {
 
-    // Link al Servicio
-    private final ServicioIngredientes servicioIngredientes;
+    private final IngredientesService ingredientesService;
 
-    @Autowired
-    public IngredientesControlador(ServicioIngredientes servicioIngredientes) {
-        this.servicioIngredientes = servicioIngredientes;
-    }
-
-    // Obtener Todos
+    // Obtener todos
     @GetMapping
-    public List<Ingredientes> getIngredientes() {
-        return this.servicioIngredientes.getIngredientes();
+    Iterable<Ingredientes> list() {
+        return ingredientesService.findAll();
     }
 
-    // Obtener por Id
-    @GetMapping("{ingredienteId}")
-    public ResponseEntity<Ingredientes> getIngrediente(@PathVariable("ingredienteId") Long id) {
-        Optional<Ingredientes> ingrediente = this.servicioIngredientes.getIngredienteById(id);
-        if (ingrediente.isPresent()) {
-            return ResponseEntity.ok(ingrediente.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // Obtener por ID
+    @GetMapping("{id_ingredientes}")
+    public Ingredientes get(@PathVariable Long id_ingredientes) {
+        return ingredientesService.findById(id_ingredientes);
     }
 
-    // Registrar Nuevo
+    // Agregar
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Object> registrarIngrediente(@RequestBody Ingredientes ingredientes) {
-        return this.servicioIngredientes.newIngrediente(ingredientes);
+    public Ingredientes create(@RequestBody IngredientesDTO ingredientesDTO) {
+        return ingredientesService.create(ingredientesDTO);
     }
 
     // Actualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> actualizarIngrediente(@PathVariable Long id, @RequestBody Ingredientes ingredientes) {
-        return this.servicioIngredientes.updateIngrediente(id, ingredientes);
+    @PutMapping("{id_ingredientes}")
+    public Ingredientes update(@PathVariable Long id_ingredientes, @RequestBody IngredientesDTO ingredientesDTO) {
+        return ingredientesService.update(id_ingredientes, ingredientesDTO);
     }
 
+
     // Eliminar
-    @DeleteMapping(path = "{ingredienteId}")
-    public ResponseEntity<Object> eliminarIngrediente(@PathVariable("ingredienteId") Long id) {
-        return this.servicioIngredientes.deleteIngrediente(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{id_ingredientes}")
+    public void delete(@PathVariable Long id_ingredientes) {
+        ingredientesService.delete(id_ingredientes);
     }
 }

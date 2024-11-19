@@ -1,5 +1,6 @@
 package com.example.DonnaPizza.MVC.PromocionesUsuarios;
 
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -9,129 +10,50 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-//Desarrollo de anthony
+
 @Service
 @AllArgsConstructor
-public class ServicioPromocionesUsuarios {
+public class PromocionesUsuariosService {
 
-    // Link al Repository
     private final PromocionesUsuariosRepository promocionesUsuariosRepository;
 
-    HashMap<String, Object> datosPromocionesUsuarios;
-
-    @Autowired
-    public ServicioPromocionesUsuarios(PromocionesUsuariosRepository promocionesUsuariosRepository) {
-        this.promocionesUsuariosRepository = promocionesUsuariosRepository;
-    }
-
-    // Obtener Todos
-    public List<PromocionesUsuarios> getPromocionesUsuarios() {
+    // Obtener todos
+    public Iterable<PromocionesUsuarios> findAll() {
         return promocionesUsuariosRepository.findAll();
     }
 
     // Obtener por ID
-    public Optional<PromocionesUsuarios> getPromocionesUsuariosByIdPromocionesUsuarios(Long idPromocionUsuario) {
-        return promocionesUsuariosRepository.findById(idPromocionUsuario);
+    public PromocionesUsuarios findById(Long id_promocionesUsuarios) {
+        return promocionesUsuariosRepository.findById(id_promocionesUsuarios).orElseThrow(ResourceNotFoundException::new);
     }
 
-    // Crear Nuevo
-    public ResponseEntity<Object> newPromocionesUsuarios(PromocionesUsuarios promocionesUsuarios) {
-        datosPromocionesUsuarios = new HashMap<>();
-
-        // Verificar id Existe
-        Optional<PromocionesUsuarios> proUserid = promocionesUsuariosRepository.findPromocionesUsuariosByIdPromocionUsuario(promocionesUsuarios.getIdPromocionUsuario());
-
-        // Mensaje de error id
-        if (proUserid.isPresent()) {
-            datosPromocionesUsuarios.put("error", true);
-            datosPromocionesUsuarios.put("mensaje", "Ya existe una promocionUsuario con ese id");
-            return new ResponseEntity<>(
-                    datosPromocionesUsuarios,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Guardar Con Exito
-        datosPromocionesUsuarios.put("mensaje", "Se ha registrado la promocionUsuario");
-        promocionesUsuariosRepository.save(promocionesUsuarios);
-        datosPromocionesUsuarios.put("data", promocionesUsuarios);
-        return new ResponseEntity<>(
-                datosPromocionesUsuarios,
-                HttpStatus.CREATED
-        );
+    // Agregar
+    public PromocionesUsuarios create(PromocionesUsuariosDTO promocionesUsuariosDTO) {
+        ModelMapper mapper = new ModelMapper();
+        PromocionesUsuarios promocionesUsuarios = mapper.map(promocionesUsuariosDTO, PromocionesUsuarios.class);
+        return promocionesUsuariosRepository.save(promocionesUsuarios);
     }
 
     // Actualizar
-    public ResponseEntity<Object> updatePromocionesUsuarios(Long idPromocionUsuario, PromocionesUsuarios promocionesUsuarios) {
-        datosPromocionesUsuarios = new HashMap<>();
+    public PromocionesUsuarios update(Long id_promocionesUsuarios, PromocionesUsuariosDTO promocionesUsuariosDTO) {
+        PromocionesUsuarios promocionesUsuariosFromDB = findById(id_promocionesUsuarios);
 
-        // Buscar promocion por ID
-        Optional<PromocionesUsuarios> promocionUsuarioExistente = promocionesUsuariosRepository.findPromocionesUsuariosByIdPromocionUsuario(promocionesUsuarios.getIdPromocionUsuario());
-        if (promocionUsuarioExistente.isEmpty()) {
-            datosPromocionesUsuarios.put("error", true);
-            datosPromocionesUsuarios.put("mensaje", "PromocionUsuario no encontrada");
-            return new ResponseEntity<>(
-                    datosPromocionesUsuarios,
-                    HttpStatus.NOT_FOUND
-            );
-        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(promocionesUsuariosDTO, promocionesUsuariosFromDB);
 
-        // Verificar si el id ya está usado
-        Optional<PromocionesUsuarios> proUserid = promocionesUsuariosRepository.findPromocionesUsuariosByIdPromocionUsuario(promocionesUsuarios.getIdPromocionUsuario());
-        if (proUserid.isPresent() && !proUserid.get().getIdPromocionUsuario().equals(idPromocionUsuario)) {
-            datosPromocionesUsuarios.put("error", true);
-            datosPromocionesUsuarios.put("mensaje", "Ya existe una promocionUsuario con ese id");
-            return new ResponseEntity<>(
-                    datosPromocionesUsuarios,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Actualizar Promociones usuarios
-        PromocionesUsuarios promocionesUsuariosActualizar = promocionUsuarioExistente.get();
-        promocionesUsuariosActualizar.setIdPromocionUsuario(promocionesUsuarios.getIdPromocionUsuario());
-        promocionesUsuariosActualizar.setIdUsuario(promocionesUsuarios.getIdUsuario());
-        promocionesUsuariosActualizar.setIdPromocion(promocionesUsuarios.getIdPromocion());
-        promocionesUsuariosActualizar.setEstado(promocionesUsuarios.getEstado());
-
-        promocionesUsuariosRepository.save(promocionesUsuariosActualizar);
-        datosPromocionesUsuarios.put("mensaje", "Se actualizó promocionUsuario");
-        datosPromocionesUsuarios.put("data", promocionesUsuariosActualizar);
-
-        return new ResponseEntity<>(
-                datosPromocionesUsuarios,
-                HttpStatus.OK
-        );
+        return promocionesUsuariosRepository.save(promocionesUsuariosFromDB);
     }
 
     // Eliminar
-    public ResponseEntity<Object> deletePromocionesUsuarios(Long idPromocionUsuario) {
-        datosPromocionesUsuarios = new HashMap<>();
-        boolean existePromocionUsuario = promocionesUsuariosRepository.existsById(idPromocionUsuario);
-        if (!existePromocionUsuario) {
-            datosPromocionesUsuarios.put("error", true);
-            datosPromocionesUsuarios.put("mensaje", "No existe promocionUsuario con ese id");
-            return new ResponseEntity<>(
-                    datosPromocionesUsuarios,
-                    HttpStatus.CONFLICT
-            );
-        }
-        promocionesUsuariosRepository.deleteById(idPromocionUsuario);
-        datosPromocionesUsuarios.put("mensaje", "promocionUsuario eliminado");
-        return new ResponseEntity<>(
-                datosPromocionesUsuarios,
-                HttpStatus.ACCEPTED
-        );
+    public void delete(Long id_promocionesUsuarios) {
+        PromocionesUsuarios promocionesUsuariosFromDB = findById(id_promocionesUsuarios);
+        promocionesUsuariosRepository.delete(promocionesUsuariosFromDB);
     }
 
     // Generar Excel
@@ -177,7 +99,7 @@ public class ServicioPromocionesUsuarios {
 
         // Crear fila de encabezado
         HSSFRow row = sheet.createRow(1);
-        String[] headers = {"ID_Promocion_usuario", "id_usuario", "id_promocion","Fecha","Estado"};
+        String[] headers = {"ID_Promocion_usuario", "id_usuario", "id_promocion", "Fecha", "Estado"};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(headers[i]);
@@ -216,7 +138,6 @@ public class ServicioPromocionesUsuarios {
             dataRow.createCell(2).setCellValue(promocionUsuario.getIdPromocion());
             dataRow.createCell(3).setCellValue(promocionUsuario.getFechaAplicacion());
             dataRow.createCell(4).setCellValue(promocionUsuario.getEstado());
-
 
 
             // Aplicar estilo de datos a cada celda

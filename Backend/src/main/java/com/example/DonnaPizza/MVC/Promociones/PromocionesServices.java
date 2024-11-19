@@ -1,65 +1,66 @@
-package com.example.DonnaPizza.MVC.Pasta;
+package com.example.DonnaPizza.MVC.Promociones;
 
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
+import org.modelmapper.ModelMapper;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
-public class ServicioPasta {
-    private final PastaRespository pastaRepository;
+public class PromocionesServices {
 
-    @Autowired
-    public ServicioPasta(PastaRespository pastaRepository) {
-        this.pastaRepository = pastaRepository;
+    private final PromocionesRepository promocionesRepository;
+
+    // Obtener todos
+    public Iterable<Promociones> findAll() {
+        return promocionesRepository.findAll();
     }
 
-    public Pastas crearPasta(Pastas pasta) {
-        return pastaRepository.save(pasta);
+    // Obtener por ID
+    public Promociones findById(Long id_promociones) {
+        return promocionesRepository.findById(id_promociones).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Optional<Pastas> obtenerPastaPorId(Long id) {
-        return pastaRepository.findById(id);
+    // Agregar
+    public Promociones create(PromocionesDTO promocionesDTO) {
+        ModelMapper mapper = new ModelMapper();
+        Promociones promociones = mapper.map(promocionesDTO, Promociones.class);
+        return promocionesRepository.save(promociones);
     }
 
-    public List<Pastas> obtenerTodasLasPastas() {
-        return pastaRepository.findAll();
+    // Actualizar
+    public Promociones update(Long id_promociones, PromocionesDTO promocionesDTO) {
+        Promociones promocionesFromDB = findById(id_promociones);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(promocionesDTO, promocionesFromDB);
+
+        return promocionesRepository.save(promocionesFromDB);
     }
 
-    public Pastas actualizarPasta(Long id, Pastas nuevaPasta) {
-        return pastaRepository.findById(id)
-                .map(pasta -> {
-                    pasta.setDescripcion(nuevaPasta.getDescripcion());
-                    pasta.setPrecio(nuevaPasta.getPrecio());
-                    pasta.setDisponible(nuevaPasta.getDisponible());
-                    return pastaRepository.save(pasta);
-                })
-                .orElseThrow(() -> new RuntimeException("Pasta no encontrada"));
+    // Eliminar
+    public void delete(Long id_promociones) {
+        Promociones promocionesFromDB = findById(id_promociones);
+        promocionesRepository.delete(promocionesFromDB);
     }
 
-    public void eliminarPasta(Long id) {
-        if (pastaRepository.existsById(id)) {
-            pastaRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Pasta no encontrada");
-        }
-    }
-
-    public void generarExcelPasta(HttpServletResponse response) throws IOException {
-        List<Pastas> pastas = pastaRepository.findAll();
+    // Generar Excel
+    public void generarExcelPromociones(HttpServletResponse response) throws IOException {
+        List<Promociones> promociones = promocionesRepository.findAll();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Pastas Info");
+        HSSFSheet sheet = workbook.createSheet("Promociones Info");
 
         // Estilo del título
         HSSFCellStyle titleStyle = workbook.createCellStyle();
@@ -77,9 +78,9 @@ public class ServicioPasta {
         // Crear fila del título y fusionar celdas
         HSSFRow titleRow = sheet.createRow(0);
         HSSFCell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("Info Pastas");
+        titleCell.setCellValue("Info Promociones");
         titleCell.setCellStyle(titleStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5)); // Reemplazar el 5 segun la cantidad de headers - 1
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2)); // Reemplazar el 2 segun la cantidad de headers - 1
 
         // Estilo del encabezado
         HSSFCellStyle headerStyle = workbook.createCellStyle();
@@ -97,7 +98,7 @@ public class ServicioPasta {
 
         // Crear fila de encabezado
         HSSFRow row = sheet.createRow(1);
-        String[] headers = {"ID_pasta", "Descripcion", "Precio", "Disponible"};
+        String[] headers = {"ID_promocion", "Nombre", "Descripcion", "Descuento", "Requisito", "Activo"};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(headers[i]);
@@ -114,12 +115,15 @@ public class ServicioPasta {
 
         // Llenar datos
         int dataRowIndex = 2;
-        for (Pastas pasta : pastas) {
+        for (Promociones promocion : promociones) {
             HSSFRow dataRow = sheet.createRow(dataRowIndex++);
-            dataRow.createCell(0).setCellValue(pasta.getId_pasta());
-            dataRow.createCell(1).setCellValue(pasta.getDescripcion());
-            dataRow.createCell(2).setCellValue(pasta.getPrecio());
-            dataRow.createCell(3).setCellValue(pasta.getDisponible()?"Disponible":"No Disponible");
+            dataRow.createCell(0).setCellValue(promocion.getId_promocion());
+            dataRow.createCell(1).setCellValue(promocion.getNombre());
+            dataRow.createCell(2).setCellValue(promocion.getDescripcion());
+            dataRow.createCell(3).setCellValue(promocion.getDescuento());
+            dataRow.createCell(4).setCellValue(promocion.getRequisitos());
+            dataRow.createCell(5).setCellValue(promocion.getActivo() ? "Si" : "No ");
+
 
             // Aplicar estilo de datos a cada celda
             for (int i = 0; i < headers.length; i++) {
@@ -132,10 +136,12 @@ public class ServicioPasta {
             sheet.autoSizeColumn(i);
         }
 
-        // Enviar el archivo a pastas
+        // Enviar el archivo al cliente
         ServletOutputStream ops = response.getOutputStream();
         workbook.write(ops);
         workbook.close();
         ops.close();
     }
 }
+
+

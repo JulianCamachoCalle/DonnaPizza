@@ -1,108 +1,58 @@
 package com.example.DonnaPizza.MVC.PizzasFamiliares;
 
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
-public class ServicioPizzasFamiliares {
+public class PizzasFamiliaresService {
 
-    // Link al Repository
     private final PizzasFamiliaresRepository pizzasFamiliaresRepository;
 
-    // Datos para respuestas
-    private final HashMap<String, Object> datosPizzasFamiliares = new HashMap<>();
-
-    @Autowired
-    public ServicioPizzasFamiliares(PizzasFamiliaresRepository pizzasFamiliaresRepository) {
-        this.pizzasFamiliaresRepository = pizzasFamiliaresRepository;
+    // Obtener todos
+    public Iterable<PizzasFamiliares> findAll() {
+        return pizzasFamiliaresRepository.findAll();
     }
 
-    // Obtener todas las pizzas familiares
-    public List<PizzasFamiliares> getPizzasFamiliares() {
-        return this.pizzasFamiliaresRepository.findAll();
+    // Obtener por ID
+    public PizzasFamiliares findById(Long id_pizzasFamiliares) {
+        return pizzasFamiliaresRepository.findById(id_pizzasFamiliares).orElseThrow(ResourceNotFoundException::new);
     }
 
-    // Obtener pizza familiar por ID
-    public Optional<PizzasFamiliares> getPizzaFamiliarById(Long id) {
-        return this.pizzasFamiliaresRepository.findById(id);
-    }
-
-    // Crear nuevo
-    public ResponseEntity<Object> newPizzaFamiliar(PizzasFamiliares pizzaFamiliar) {
-        // Verificar nombre existente
-        Optional<PizzasFamiliares> resNom = pizzasFamiliaresRepository.findPizzaFamiliarByNombre(pizzaFamiliar.getNombre());
-
-        if (resNom.isPresent()) {
-            datosPizzasFamiliares.put("error", true);
-            datosPizzasFamiliares.put("message", "Ya existe un producto con ese nombre");
-            return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.CONFLICT);
-        }
-
-        // Guardar con éxito
-        pizzasFamiliaresRepository.save(pizzaFamiliar);
-        datosPizzasFamiliares.put("mensaje", "Se ha registrado el producto");
-        datosPizzasFamiliares.put("data", pizzaFamiliar);
-        return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.CREATED);
+    // Agregar
+    public PizzasFamiliares create(PizzasFamiliaresDTO pizzasFamiliaresDTO) {
+        ModelMapper mapper = new ModelMapper();
+        PizzasFamiliares pizzasFamiliares = mapper.map(pizzasFamiliaresDTO, PizzasFamiliares.class);
+        return pizzasFamiliaresRepository.save(pizzasFamiliares);
     }
 
     // Actualizar
-    public ResponseEntity<Object> updatePizzaFamiliar(Long id, PizzasFamiliares pizzaFamiliar) {
-        // Buscar la pizza por ID
-        Optional<PizzasFamiliares> pizzaFamiliarExistente = pizzasFamiliaresRepository.findById(id);
-        if (pizzaFamiliarExistente.isEmpty()) {
-            datosPizzasFamiliares.put("error", true);
-            datosPizzasFamiliares.put("message", "Pizza no encontrada");
-            return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.NOT_FOUND);
-        }
+    public PizzasFamiliares update(Long id_pizzasFamiliares, PizzasFamiliaresDTO pizzasFamiliaresDTO) {
+        PizzasFamiliares pizzasFamiliaresFromDB = findById(id_pizzasFamiliares);
 
-        // Verificar si el nombre ya está en uso
-        Optional<PizzasFamiliares> resNom = pizzasFamiliaresRepository.findPizzaFamiliarByNombre(pizzaFamiliar.getNombre());
-        if (resNom.isPresent() && !resNom.get().getId_pizza_familiar().equals(id)) {
-            datosPizzasFamiliares.put("error", true);
-            datosPizzasFamiliares.put("message", "Ya existe un producto con ese nombre");
-            return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.CONFLICT);
-        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(pizzasFamiliaresDTO, pizzasFamiliaresFromDB);
 
-        // Actualizar pizza
-        PizzasFamiliares pizzaFamiliaresActualizar = pizzaFamiliarExistente.get();
-        pizzaFamiliaresActualizar.setNombre(pizzaFamiliar.getNombre());
-        pizzaFamiliaresActualizar.setDescripcion(pizzaFamiliar.getDescripcion());
-        pizzaFamiliaresActualizar.setPrecio(pizzaFamiliar.getPrecio());
-        pizzaFamiliaresActualizar.setDisponible(pizzaFamiliar.getDisponible());
-
-        pizzasFamiliaresRepository.save(pizzaFamiliaresActualizar);
-        datosPizzasFamiliares.put("mensaje", "Se actualizó el producto");
-        datosPizzasFamiliares.put("data", pizzaFamiliaresActualizar);
-
-        return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.OK);
+        return pizzasFamiliaresRepository.save(pizzasFamiliaresFromDB);
     }
 
     // Eliminar
-    public ResponseEntity<Object> deletePizzaFamiliar(Long id) {
-        if (!pizzasFamiliaresRepository.existsById(id)) {
-            datosPizzasFamiliares.put("error", true);
-            datosPizzasFamiliares.put("message", "No existe un producto con ese id");
-            return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.NOT_FOUND);
-        }
-
-        pizzasFamiliaresRepository.deleteById(id);
-        datosPizzasFamiliares.put("mensaje", "Producto eliminado");
-        return new ResponseEntity<>(datosPizzasFamiliares, HttpStatus.OK);
+    public void delete(Long id_pizzasFamiliares) {
+        PizzasFamiliares pizzasFamiliaresFromDB = findById(id_pizzasFamiliares);
+        pizzasFamiliaresRepository.delete(pizzasFamiliaresFromDB);
     }
 
     // Generar Excel
