@@ -1,71 +1,66 @@
-package com.example.DonnaPizza.MVC.Entrada;
+package com.example.DonnaPizza.MVC.Ingredientes;
 
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
-public class ServicioEntrada {
-    private final EntradaRepository entradaRepository;
+public class IngredientesService {
 
-    @Autowired
-    public ServicioEntrada(EntradaRepository entradaRepository) {
-        this.entradaRepository = entradaRepository;
+    private final IngredientesRepository ingredientesRepository;
+
+    // Obtener todos
+    public Iterable<Ingredientes> findAll() {
+        return ingredientesRepository.findAll();
     }
 
-    // Crear una nueva entrada
-    public Entrada crearEntrada(Entrada entrada) {
-        return entradaRepository.save(entrada);
+    // Obtener por ID
+    public Ingredientes findById(Long id_ingredientes) {
+        return ingredientesRepository.findById(id_ingredientes).orElseThrow(ResourceNotFoundException::new);
     }
 
-    // Obtener una entrada por ID
-    public Optional<Entrada> obtenerEntradaPorId(Long id) {
-        return entradaRepository.findById(id);
+    // Agregar
+    public Ingredientes create(IngredientesDTO ingredientesDTO) {
+        ModelMapper mapper = new ModelMapper();
+        Ingredientes ingredientes = mapper.map(ingredientesDTO, Ingredientes.class);
+        return ingredientesRepository.save(ingredientes);
     }
 
-    // Obtener todas las entradas
-    public List<Entrada> obtenerTodasLasEntradas() {
-        return entradaRepository.findAll();
+    // Actualizar
+    public Ingredientes update(Long id_ingredientes, IngredientesDTO ingredientesDTO) {
+        Ingredientes ingredientesFromDB = findById(id_ingredientes);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(ingredientesDTO, ingredientesFromDB);
+
+        return ingredientesRepository.save(ingredientesFromDB);
     }
 
-    // Actualizar una entrada existente
-    public Entrada actualizarEntrada(Long id, Entrada nuevaEntrada) {
-        return entradaRepository.findById(id)
-                .map(entrada -> {
-                    entrada.setNombre(nuevaEntrada.getNombre());
-                    entrada.setDescripcion(nuevaEntrada.getDescripcion());
-                    entrada.setPrecio(nuevaEntrada.getPrecio());
-                    entrada.setDisponible(nuevaEntrada.getDisponible());
-                    return entradaRepository.save(entrada);
-                })
-                .orElseThrow(() -> new RuntimeException("Entrada no encontrada"));
+    // Eliminar
+    public void delete(Long id_ingredientes) {
+        Ingredientes ingredientesFromDB = findById(id_ingredientes);
+        ingredientesRepository.delete(ingredientesFromDB);
     }
 
-    // Eliminar una entrada por ID
-    public void eliminarEntrada(Long id) {
-        if (entradaRepository.existsById(id)) {
-            entradaRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Entrada no encontrada");
-        }
-    }
-
-    public void generarExcelEntrada(HttpServletResponse response) throws IOException {
-        List<Entrada> entradas = entradaRepository.findAll();
+    // Generar Excel
+    public void generarExcelIngredientes(HttpServletResponse response) throws IOException {
+        List<Ingredientes> ingredientes = ingredientesRepository.findAll();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Entradas Info");
+        HSSFSheet sheet = workbook.createSheet("Ingredientes Info");
 
         // Estilo del título
         HSSFCellStyle titleStyle = workbook.createCellStyle();
@@ -83,9 +78,9 @@ public class ServicioEntrada {
         // Crear fila del título y fusionar celdas
         HSSFRow titleRow = sheet.createRow(0);
         HSSFCell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("Info Entradas");
+        titleCell.setCellValue("Info Ingredientes");
         titleCell.setCellStyle(titleStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 5)); // Reemplazar el 5 segun la cantidad de headers - 1
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2)); // Reemplazar el 2 segun la cantidad de headers - 1
 
         // Estilo del encabezado
         HSSFCellStyle headerStyle = workbook.createCellStyle();
@@ -103,7 +98,7 @@ public class ServicioEntrada {
 
         // Crear fila de encabezado
         HSSFRow row = sheet.createRow(1);
-        String[] headers = {"ID_Entrada", "Nombre", "Descripcion", "Precio", "Disponible"};
+        String[] headers = {"ID_Ingrediente", "Nombre", "Cantidad Disponible"};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(headers[i]);
@@ -120,14 +115,11 @@ public class ServicioEntrada {
 
         // Llenar datos
         int dataRowIndex = 2;
-        for (Entrada entrada : entradas) {
+        for (Ingredientes ingrediente : ingredientes) {
             HSSFRow dataRow = sheet.createRow(dataRowIndex++);
-            dataRow.createCell(0).setCellValue(entrada.getId_entrada());
-            dataRow.createCell(1).setCellValue(entrada.getNombre());
-            dataRow.createCell(2).setCellValue(entrada.getDescripcion());
-            dataRow.createCell(3).setCellValue(entrada.getPrecio());
-            dataRow.createCell(4).setCellValue(entrada.getDisponible() ? "Disponible" : "No Disponible");
-
+            dataRow.createCell(0).setCellValue(ingrediente.getId_ingrediente());
+            dataRow.createCell(1).setCellValue(ingrediente.getNombre());
+            dataRow.createCell(2).setCellValue(ingrediente.getCantidad_disponible());
 
             // Aplicar estilo de datos a cada celda
             for (int i = 0; i < headers.length; i++) {
@@ -147,3 +139,5 @@ public class ServicioEntrada {
         ops.close();
     }
 }
+
+

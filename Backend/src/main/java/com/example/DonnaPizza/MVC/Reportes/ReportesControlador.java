@@ -1,12 +1,12 @@
 package com.example.DonnaPizza.MVC.Reportes;
 
-import com.example.DonnaPizza.MVC.Cliente.ServicioCliente;
-import com.example.DonnaPizza.MVC.Documentos.ServicioDocumentos;
-import com.example.DonnaPizza.MVC.Ingredientes.ServicioIngredientes;
+import com.example.DonnaPizza.MVC.Cliente.ClienteService;
+import com.example.DonnaPizza.MVC.Documentos.DocumentosService;
+import com.example.DonnaPizza.MVC.Ingredientes.IngredientesService;
 import com.example.DonnaPizza.MVC.Pizzas.PizzasService;
-import com.example.DonnaPizza.MVC.PizzasFamiliares.ServicioPizzasFamiliares;
-import com.example.DonnaPizza.MVC.Promociones.ServicioPromociones;
-import com.example.DonnaPizza.MVC.PromocionesUsuarios.ServicioPromocionesUsuarios;
+import com.example.DonnaPizza.MVC.PizzasFamiliares.PizzasFamiliaresService;
+import com.example.DonnaPizza.MVC.Promociones.PromocionesServices;
+import com.example.DonnaPizza.MVC.PromocionesUsuarios.PromocionesUsuariosService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,22 +21,22 @@ public class ReportesControlador {
     private PizzasService servicioPizzas;
 
     @Autowired
-    private ServicioCliente servicioCliente;
+    private ClienteService servicioCliente;
 
     @Autowired
-    private ServicioDocumentos servicioDocumentos;
+    private DocumentosService servicioDocumentos;
 
     @Autowired
-    private ServicioPromociones servicioPromociones;
+    private PromocionesServices servicioPromociones;
 
     @Autowired
-    ServicioPromocionesUsuarios servicioPromocionesUsuarios;
+    PromocionesUsuariosService servicioPromocionesUsuarios;
 
     @Autowired
-    private ServicioIngredientes servicioIngredientes;
+    private IngredientesService servicioIngredientes;
 
     @Autowired
-    private ServicioPizzasFamiliares servicioPizzasFamiliares;
+    private PizzasFamiliaresService servicioPizzasFamiliares;
 
     @GetMapping("/excelpizzas")
     public void generarExcelReportePizzas(HttpServletResponse response) throws IOException {

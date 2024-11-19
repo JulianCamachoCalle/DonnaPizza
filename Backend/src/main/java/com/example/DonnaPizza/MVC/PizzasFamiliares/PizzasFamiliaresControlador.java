@@ -1,65 +1,46 @@
 package com.example.DonnaPizza.MVC.PizzasFamiliares;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping(path = "api/v1/pizzasfamiliares")
-@CrossOrigin(origins = {"http://localhost:4200"})
 public class PizzasFamiliaresControlador {
 
-    // Link al Servicio
-    private final ServicioPizzasFamiliares servicioPizzasFamiliares;
+    private final PizzasFamiliaresService pizzasFamiliaresService;
 
-    @Autowired
-    public PizzasFamiliaresControlador(ServicioPizzasFamiliares servicioPizzasFamiliares) {
-        this.servicioPizzasFamiliares = servicioPizzasFamiliares;
-    }
-
-    // Obtener Todos
+    // Obtener todos
     @GetMapping
-    public List<PizzasFamiliares> getPizzasFamiliares() {
-        return this.servicioPizzasFamiliares.getPizzasFamiliares();
+    Iterable<PizzasFamiliares> list() {
+        return pizzasFamiliaresService.findAll();
     }
 
-    // Obtener por Id
-    @GetMapping("{pizzasfamiliaresId}")
-    public ResponseEntity<PizzasFamiliares> getPizzaFamiliar(@PathVariable("pizzasfamiliaresId") Long id) {
-        Optional<PizzasFamiliares> pizzasfamiliares = this.servicioPizzasFamiliares.getPizzaFamiliarById(id);
-        if (pizzasfamiliares.isPresent()) {
-            return ResponseEntity.ok(pizzasfamiliares.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // Obtener por ID
+    @GetMapping("{id_pizzasFamiliares}")
+    public PizzasFamiliares get(@PathVariable Long id_pizzasFamiliares) {
+        return pizzasFamiliaresService.findById(id_pizzasFamiliares);
     }
 
-    // Registrar Nuevo
+    // Agregar
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Object> registrarPizzaFamiliar(@RequestBody PizzasFamiliares pizzafamiliar) {
-        return this.servicioPizzasFamiliares.newPizzaFamiliar(pizzafamiliar);
+    public PizzasFamiliares create(@RequestBody PizzasFamiliaresDTO pizzasFamiliaresDTO) {
+        return pizzasFamiliaresService.create(pizzasFamiliaresDTO);
     }
 
     // Actualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> actualizarPizzaFamiliares(@PathVariable Long id, @RequestBody PizzasFamiliares pizzafamiliar) {
-        return this.servicioPizzasFamiliares.updatePizzaFamiliar(id, pizzafamiliar);
+    @PutMapping("{id_pizzasFamiliares}")
+    public PizzasFamiliares update(@PathVariable Long id_pizzasFamiliares, @RequestBody PizzasFamiliaresDTO pizzasFamiliaresDTO) {
+        return pizzasFamiliaresService.update(id_pizzasFamiliares, pizzasFamiliaresDTO);
     }
 
+
     // Eliminar
-    @DeleteMapping(path = "{pizzasfamiliaresId}")
-    public ResponseEntity<Object> eliminarPizzaFamiliar(@PathVariable("pizzasfamiliaresId") Long id) {
-        return this.servicioPizzasFamiliares.deletePizzaFamiliar(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{id_pizzasFamiliares}")
+    public void delete(@PathVariable Long id_pizzasFamiliares) {
+        pizzasFamiliaresService.delete(id_pizzasFamiliares);
     }
 }

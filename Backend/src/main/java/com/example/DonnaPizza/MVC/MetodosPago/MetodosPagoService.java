@@ -1,132 +1,58 @@
 package com.example.DonnaPizza.MVC.MetodosPago;
 
+import com.example.DonnaPizza.Exception.ResourceNotFoundException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Service
-public class ServicioMetodosPago {
+public class MetodosPagoService {
 
-    // Link al Repository
     private final MetodosPagoRepository metodosPagoRepository;
 
-    HashMap<String, Object> datosMetodosPago;
-
-    @Autowired
-    public ServicioMetodosPago(MetodosPagoRepository metodosPagoRepository) {
-        this.metodosPagoRepository = metodosPagoRepository;
-    }
-
-    // Obtener Todos
-    public List<MetodosPago> getMetodosPago() {
+    // Obtener todos
+    public Iterable<MetodosPago> findAll() {
         return metodosPagoRepository.findAll();
     }
 
     // Obtener por ID
-    public Optional<MetodosPago> getMetodosPagoById(Long id) {
-        return metodosPagoRepository.findById(id);
+    public MetodosPago findById(Long id_metodospago) {
+        return metodosPagoRepository.findById(id_metodospago).orElseThrow(ResourceNotFoundException::new);
     }
 
-    // Crear Nuevo
-    public ResponseEntity<Object> newMetodosPago(MetodosPago metodosPago) {
-        datosMetodosPago = new HashMap<>();
-
-        // Verificar Nombre Existente
-        Optional<MetodosPago> resNom = metodosPagoRepository.findByNombre(metodosPago.getNombre());
-
-        // Mnesaje de error Nombre
-        if (resNom.isPresent()) {
-            datosMetodosPago.put("error", true);
-            datosMetodosPago.put("mensaje", "Ya existe un metodo de pago con ese nombre");
-            return new ResponseEntity<>(
-                    datosMetodosPago,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Guardar Con Exito
-        datosMetodosPago.put("mensaje", "Se ha registrado el metodo de pago");
-        metodosPagoRepository.save(metodosPago);
-        datosMetodosPago.put("data", metodosPago);
-        return new ResponseEntity<>(
-                datosMetodosPago,
-                HttpStatus.CREATED
-        );
+    // Agregar
+    public MetodosPago create(MetodosPagoDTO metodosPagoDTO) {
+        ModelMapper mapper = new ModelMapper();
+        MetodosPago metodosPago = mapper.map(metodosPagoDTO, MetodosPago.class);
+        return metodosPagoRepository.save(metodosPago);
     }
 
     // Actualizar
-    public ResponseEntity<Object> updateMetodosPago(Long id, MetodosPago metodosPago) {
-        datosMetodosPago = new HashMap<>();
+    public MetodosPago update(Long id_metodospago, MetodosPagoDTO metodosPagoDTO) {
+        MetodosPago metodosPagoFromDB = findById(id_metodospago);
 
-        // Buscar metodo de pago por ID
-        Optional<MetodosPago> metodosPagoExistente = metodosPagoRepository.findById(id);
-        if (metodosPagoExistente.isEmpty()) {
-            datosMetodosPago.put("error", true);
-            datosMetodosPago.put("mensaje", "Metodo de pago no encontrado");
-            return new ResponseEntity<>(
-                    datosMetodosPago,
-                    HttpStatus.NOT_FOUND
-            );
-        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.map(metodosPagoDTO, metodosPagoFromDB);
 
-        // Verificar si el nombre ya está usado
-        Optional<MetodosPago> resNom = metodosPagoRepository.findByNombre(metodosPago.getNombre());
-        if (resNom.isPresent() && !resNom.get().getId_metodo_pago().equals(id)) {
-            datosMetodosPago.put("error", true);
-            datosMetodosPago.put("mensaje", "Ya existe un metodo de pago con ese nombre");
-            return new ResponseEntity<>(
-                    datosMetodosPago,
-                    HttpStatus.CONFLICT
-            );
-        }
-
-        // Actualizar metodo de pago
-        MetodosPago metodosPagoActualizar = metodosPagoExistente.get();
-        metodosPagoActualizar.setNombre(metodosPago.getNombre());
-        metodosPagoActualizar.setDescripcion(metodosPago.getDescripcion());
-
-        metodosPagoRepository.save(metodosPagoActualizar);
-        datosMetodosPago.put("mensaje", "Se actualizó el metodo de pago");
-        datosMetodosPago.put("data", metodosPagoActualizar);
-
-        return new ResponseEntity<>(
-                datosMetodosPago,
-                HttpStatus.OK
-        );
+        return metodosPagoRepository.save(metodosPagoFromDB);
     }
 
     // Eliminar
-    public ResponseEntity<Object> deleteMetodosPago(Long id) {
-        datosMetodosPago = new HashMap<>();
-        boolean existeMetodosPago = metodosPagoRepository.existsById(id);
-        if (!existeMetodosPago) {
-            datosMetodosPago.put("error", true);
-            datosMetodosPago.put("mensaje", "No existe un metodo de pago con ese id");
-            return new ResponseEntity<>(
-                    datosMetodosPago,
-                    HttpStatus.CONFLICT
-            );
-        }
-        metodosPagoRepository.deleteById(id);
-        datosMetodosPago.put("mensaje", "metodo de pago eliminado");
-        return new ResponseEntity<>(
-                datosMetodosPago,
-                HttpStatus.ACCEPTED
-        );
+    public void delete(Long id_metodospago) {
+        MetodosPago metodosPagoFromDB = findById(id_metodospago);
+        metodosPagoRepository.delete(metodosPagoFromDB);
     }
 
     // Generar Excel
