@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/v1/promociones")
 public class PromocionesControlador {
 
-    private final PromocionesServices promocionesServices;
+    private final PromocionesService promocionesServices;
 
     // Obtener todos
     @GetMapping

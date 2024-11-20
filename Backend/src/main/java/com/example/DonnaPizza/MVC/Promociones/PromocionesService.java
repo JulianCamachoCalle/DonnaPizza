@@ -18,7 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class PromocionesServices {
+public class PromocionesService {
 
     private final PromocionesRepository promocionesRepository;
 
