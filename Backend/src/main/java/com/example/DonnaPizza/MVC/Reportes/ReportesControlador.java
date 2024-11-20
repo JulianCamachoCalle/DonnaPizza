@@ -5,37 +5,32 @@ import com.example.DonnaPizza.MVC.Documentos.DocumentosService;
 import com.example.DonnaPizza.MVC.Ingredientes.IngredientesService;
 import com.example.DonnaPizza.MVC.Pizzas.PizzasService;
 import com.example.DonnaPizza.MVC.PizzasFamiliares.PizzasFamiliaresService;
-import com.example.DonnaPizza.MVC.Promociones.PromocionesServices;
+import com.example.DonnaPizza.MVC.Promociones.PromocionesService;
 import com.example.DonnaPizza.MVC.PromocionesUsuarios.PromocionesUsuariosService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+
 //Desarrollo de todos
+@AllArgsConstructor
 @RestController
 public class ReportesControlador {
 
-    @Autowired
     private PizzasService servicioPizzas;
 
-    @Autowired
     private ClienteService servicioCliente;
 
-    @Autowired
     private DocumentosService servicioDocumentos;
 
-    @Autowired
-    private PromocionesServices servicioPromociones;
+    private PromocionesService servicioPromociones;
 
-    @Autowired
-    PromocionesUsuariosService servicioPromocionesUsuarios;
+    private PromocionesUsuariosService servicioPromocionesUsuarios;
 
-    @Autowired
     private IngredientesService servicioIngredientes;
 
-    @Autowired
     private PizzasFamiliaresService servicioPizzasFamiliares;
 
     @GetMapping("/excelpizzas")
@@ -65,43 +60,44 @@ public class ReportesControlador {
     }
 
     @GetMapping("/exceldocumentos")
-    public void generarExcelReportesDocumentos(HttpServletResponse response) throws IOException{
+    public void generarExcelReportesDocumentos(HttpServletResponse response) throws IOException {
 
         response.setContentType("application/octet-stream");
 
-        String headerKey="Content-Disposition";
-        String headerValue="attachment; filename=documentos.xls";
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=documentos.xls";
 
-        response.setHeader(headerKey,headerValue);
+        response.setHeader(headerKey, headerValue);
 
         servicioDocumentos.generarExcelDocumento(response);
     }
 
     @GetMapping("/excelpromociones")
-    public void generarExcelReportesPromociones(HttpServletResponse response) throws IOException{
+    public void generarExcelReportesPromociones(HttpServletResponse response) throws IOException {
 
         response.setContentType("application/octet-stream");
 
-        String headerKey= "Content-Disposition";
-        String headerValue="attachment; filename=promociones.xls";
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=promociones.xls";
 
-        response.setHeader(headerKey,headerValue);
+        response.setHeader(headerKey, headerValue);
 
         servicioPromociones.generarExcelPromociones(response);
     }
 
     @GetMapping("/excelpromocionesusuarios")
-    public void generarExcelReportesPromocionesUsuarios(HttpServletResponse response) throws IOException{
+    public void generarExcelReportesPromocionesUsuarios(HttpServletResponse response) throws IOException {
 
         response.setContentType("application/octet-stream");
 
-        String headerKey= "Content-Disposition";
-        String headerValue="attachment; filename=promocionesUsuarios.xls";
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=promocionesUsuarios.xls";
 
-        response.setHeader(headerKey,headerValue);
+        response.setHeader(headerKey, headerValue);
 
         servicioPromocionesUsuarios.generarExcelPromocionesUsuarios(response);
     }
+
     @GetMapping("/excelingredientes")
     public void generarExcelReporteIngredientes(HttpServletResponse response) throws IOException {
 
