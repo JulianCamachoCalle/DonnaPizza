@@ -75,15 +75,15 @@
         <p class="text-left font-weight-bold mx-2" id="subtitulo-contacto">¿Tienes alguna pregunta o quieres hacer
             un
             pedido? ¡Estamos aquí para ayudarte! Escríbenos o llámanos, y con gusto te atenderemos.</p>
-        <form id="consultaForm" class="row" th:action="@{/dataformcontacto}" method="post">
+        <form id="consultaForm" class="row">
             <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                <input type="text" class="form-control p-2" id="nombre" name="nombre">
+                <input type="text" class="form-control p-2" id="nombre" name="nombre" placeholder="Nombre">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                <input type="email" class="form-control p-2" id="email" name="emailDto">
+                <input type="email" class="form-control p-2" id="email" name="email" placeholder="Email">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3" id="input-contacto">
-                <input type="tel" class="form-control p-2" id="telefono" name="telefono">
+                <input type="tel" class="form-control p-2" id="telefono" name="telefono" placeholder="Telefono">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12 mb-3 d-flex justify-content-center" id="input-contacto">
                 <button type="submit" class="btn btn-danger p-2 w-100" id="boton-contacto">Solicitar Ayuda</button>
