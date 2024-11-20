@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PizzaListComponentComponent } from '../pizza-list-component/pizza-list-component.component';
-import { NavbarComponent } from '../../navbar/navbar.component';
-import { FooterComponent } from '../../footer/footer.component';
+import { PizzaListComponentComponent } from '../../UTILS/pizza-list-component/pizza-list-component.component';
+import { NavbarComponent } from '../../../navbar/navbar.component';
+import { FooterComponent } from '../../../footer/footer.component';
 
 @Component({
   selector: 'app-carta',

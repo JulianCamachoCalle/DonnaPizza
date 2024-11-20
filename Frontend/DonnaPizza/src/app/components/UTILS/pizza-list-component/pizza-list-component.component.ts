@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { PizzaService } from '../../services/pizza/pizza.service';
+import { PizzaService } from '../../../services/pizza/pizza.service';
 import { CommonModule } from '@angular/common';
-import { Pizza } from '../../models/pizza.model';
+import { Pizza } from '../../../models/pizza.model';
 import { RouterModule } from '@angular/router';
 
 @Component({

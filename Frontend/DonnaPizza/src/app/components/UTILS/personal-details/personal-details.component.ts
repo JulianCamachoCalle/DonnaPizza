@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../services/auth/user';
+import { User } from '../../../services/auth/user';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user/user.service';
+import { UserService } from '../../../services/user/user.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoginService } from '../../services/auth/login.service';
+import { LoginService } from '../../../services/auth/login.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 

@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PizzaService } from '../../services/pizza/pizza.service';
-import { Pizza } from '../../models/pizza.model';
+import { PizzaService } from '../../../services/pizza/pizza.service';
+import { Pizza } from '../../../models/pizza.model';
 
 @Component({
   selector: 'app-pizzas-form',
