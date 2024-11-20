@@ -5,6 +5,10 @@
     min-height: 100vh;
 }
 
+.contenido {
+    height: 100vh;
+}
+
 /* Título */
 .titulo-locales {
     color: white;
@@ -30,7 +34,7 @@
 /* Mapa */
 .map-locales {
     max-width: 80%;
-    max-height: 500px;
+    max-height: 900px;
     border-radius: 25px;
     overflow: hidden;
 }
