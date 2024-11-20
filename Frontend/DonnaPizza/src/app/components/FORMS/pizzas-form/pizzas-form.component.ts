@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PizzaService } from '../../../services/pizza/pizza.service';
 import { Pizza } from '../../../models/pizza.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pizzas-form',
@@ -50,13 +51,33 @@ export class PizzasFormComponent implements OnInit {
     const pizzaForm = this.form!.value;
 
     if (this.pizza) {
+      // Actualizar pizza existente
       this.pizzasService.update(this.pizza.id_pizza, pizzaForm).subscribe(() => {
-        this.router.navigate(['/admin/pizzas'])
-      })
+        Swal.fire({
+          title: '¡Actualización exitosa!',
+          text: `La pizza "${pizzaForm.nombre}" ha sido actualizada.`,
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.router.navigate(['/admin/pizzas']);
+        });
+      }, () => {
+        Swal.fire('Error', 'No se pudo actualizar la pizza. Inténtalo nuevamente.', 'error');
+      });
     } else {
+      // Crear nueva pizza
       this.pizzasService.create(pizzaForm).subscribe(() => {
-        this.router.navigate(['/admin/pizzas'])
-      })
+        Swal.fire({
+          title: '¡Agregado exitoso!',
+          text: `La pizza "${pizzaForm.nombre}" ha sido agregada.`,
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.router.navigate(['/admin/pizzas']);
+        });
+      }, () => {
+        Swal.fire('Error', 'No se pudo agregar la pizza. Inténtalo nuevamente.', 'error');
+      });
     }
   }
 }

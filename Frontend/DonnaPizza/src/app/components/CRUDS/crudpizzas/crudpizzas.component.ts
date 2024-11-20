@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Pizza } from '../../../models/pizza.model';
 import { PizzaService } from '../../../services/pizza/pizza.service';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crudpizzas',
@@ -31,11 +32,35 @@ export class CRUDPizzasComponent implements OnInit {
   }
 
   deletePizza(pizza: Pizza) {
-    this.pizzasService.delete(pizza.id_pizza).subscribe(() => {
-      this.loadAll();
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar la pizza "${pizza.nombre}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.pizzasService.delete(pizza.id_pizza).subscribe(() => {
+          this.loadAll(); // Recarga la lista de pizzas
+          Swal.fire(
+            '¡Eliminada!',
+            `La pizza "${pizza.nombre}" ha sido eliminada.`,
+            'success'
+          );
+        }, (error) => {
+          Swal.fire(
+            'Error',
+            'Hubo un problema al eliminar la pizza. Inténtalo nuevamente.',
+            'error'
+          );
+        });
+      }
     });
   }
-  
+
   generarReporteExcel() {
     const url = 'http://localhost:8080/excelpizzas';
     window.open(url, '_blank');
