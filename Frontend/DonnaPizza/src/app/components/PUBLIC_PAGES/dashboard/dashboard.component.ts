@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../../services/auth/login.service';
+import { LoginService } from '../../../services/auth/login.service';
 import { Router } from '@angular/router';
-import { PersonalDetailsComponent } from "../personal-details/personal-details.component";
+import { PersonalDetailsComponent } from "../../UTILS/personal-details/personal-details.component";
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from "../../navbar/navbar.component";
-import { FooterComponent } from "../../footer/footer.component";
+import { NavbarComponent } from "../../../navbar/navbar.component";
+import { FooterComponent } from "../../../footer/footer.component";
 
 @Component({
   selector: 'app-dashboard',

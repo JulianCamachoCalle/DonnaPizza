@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Pizza } from '../../models/pizza.model';
-import { PizzaService } from '../../services/pizza/pizza.service';
+import { Pizza } from '../../../models/pizza.model';
+import { PizzaService } from '../../../services/pizza/pizza.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -34,5 +34,10 @@ export class CRUDPizzasComponent implements OnInit {
     this.pizzasService.delete(pizza.id_pizza).subscribe(() => {
       this.loadAll();
     });
+  }
+  
+  generarReporteExcel() {
+    const url = 'http://localhost:8080/excelpizzas';
+    window.open(url, '_blank');
   }
 }

@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { LoginRegisterComponent } from './auth/login-register/login-register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { InicioComponent } from './components/inicio/inicio.component';
-import { PrimerlocalComponent } from './components/primerlocal/primerlocal.component';
-import { SegundolocalComponent } from './components/segundolocal/segundolocal.component';
-import { CartaComponent } from './components/carta/carta.component';
+import { DashboardComponent } from './components/PUBLIC_PAGES/dashboard/dashboard.component';
+import { InicioComponent } from './components/PUBLIC_PAGES/inicio/inicio.component';
+import { PrimerlocalComponent } from './components/PUBLIC_PAGES/primerlocal/primerlocal.component';
+import { SegundolocalComponent } from './components/PUBLIC_PAGES/segundolocal/segundolocal.component';
+import { CartaComponent } from './components/PUBLIC_PAGES/carta/carta.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
-import { CRUDPizzasComponent } from './components/crudpizzas/crudpizzas.component';
-import { PizzasFormComponent } from './components/pizzas-form/pizzas-form.component';
+import { CRUDPizzasComponent } from './components/CRUDS/crudpizzas/crudpizzas.component';
+import { PizzasFormComponent } from './components/FORMS/pizzas-form/pizzas-form.component';
 
 export const routes: Routes = [
     { path: '', component: InicioComponent },
