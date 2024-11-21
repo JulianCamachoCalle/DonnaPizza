@@ -12,6 +12,10 @@
                 <div class="card-body m-0">
                     <app-personal-details></app-personal-details>
                 </div>
+
+                <div *ngIf="isAdmin" class="text-center mb-3">
+                    <button (click)="navigateToAdmin()" class="btn btn-primary">Apartado ADMIN</button>
+                </div>
             </div>
         </div>
     </div>

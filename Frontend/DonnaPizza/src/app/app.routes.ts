@@ -9,6 +9,7 @@ import { SendEmailComponent } from './components/send-email/send-email.component
 import { PizzasFormComponent } from './components/FORMS/pizzas-form/pizzas-form.component';
 import { AdminComponent } from './components/ADMIN/admin/admin.component';
 import { CRUDPizzasComponent } from './components/CRUDS/crudpizzas/crudpizzas.component';
+import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
     { path: '', component: InicioComponent },
     { path: 'carta', component: CartaComponent },
@@ -17,9 +18,9 @@ export const routes: Routes = [
     { path: 'login', component: LoginRegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'admin/email', component: SendEmailComponent },
-    { path: 'new-pizza', component: PizzasFormComponent},
-    { path: ':id/edit', component: PizzasFormComponent},
-    { path: 'admin', component: AdminComponent},
-    { path: 'admin/pizzas', component: CRUDPizzasComponent},
-      
+    { path: 'new-pizza', component: PizzasFormComponent },
+    { path: ':id/edit', component: PizzasFormComponent },
+    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+    { path: 'admin/pizzas', component: CRUDPizzasComponent, canActivate: [AuthGuard] },
+    { path: '**', redirectTo: '/' }
 ];

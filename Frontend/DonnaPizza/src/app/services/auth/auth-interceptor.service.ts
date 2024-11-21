@@ -9,7 +9,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Si el usuario está autenticado, agrega el token a las cabeceras
-    const token = localStorage.getItem('token');  // o el método que uses para obtener el token
+    const token = localStorage.getItem('token');
     if (token) {
       req = req.clone({
         setHeaders: {
