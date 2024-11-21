@@ -1,21 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NavbarComponent } from './navbar/navbar.component';
-import { FooterComponent } from './footer/footer.component';
 import { JwtInterceptorService } from './services/auth/jwt-interceptor.service';
 import { ErrorInterceptorService } from './services/auth/error-interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CartaComponent } from './components/PUBLIC_PAGES/carta/carta.component';
-import { PrimerlocalComponent } from './components/PUBLIC_PAGES/primerlocal/primerlocal.component';
-import { SegundolocalComponent } from './components/PUBLIC_PAGES/segundolocal/segundolocal.component';
 import { AuthInterceptorService } from './services/auth/auth-interceptor.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule, ReactiveFormsModule, HttpClientModule, NavbarComponent, FooterComponent, CartaComponent, PrimerlocalComponent, SegundolocalComponent],
+  imports: [RouterOutlet, CommonModule, ReactiveFormsModule, HttpClientModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },

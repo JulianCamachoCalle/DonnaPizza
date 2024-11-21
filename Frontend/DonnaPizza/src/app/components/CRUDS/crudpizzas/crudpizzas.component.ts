@@ -6,11 +6,12 @@ import { Pizza } from '../../../models/pizza.model';
 import { PizzaService } from '../../../services/pizza/pizza.service';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DasbordnavComponent } from "../../dasbordnav/dasbordnav.component";
 
 @Component({
   selector: 'app-crudpizzas',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule, DasbordnavComponent],
   templateUrl: './crudpizzas.component.html',
   styleUrl: './crudpizzas.component.css'
 })
