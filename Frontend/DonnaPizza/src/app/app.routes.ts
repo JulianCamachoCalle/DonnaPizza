@@ -7,8 +7,8 @@ import { SegundolocalComponent } from './components/PUBLIC_PAGES/segundolocal/se
 import { CartaComponent } from './components/PUBLIC_PAGES/carta/carta.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { PizzasFormComponent } from './components/FORMS/pizzas-form/pizzas-form.component';
-import path from 'path';
-
+import { AdminComponent } from './components/ADMIN/admin/admin.component';
+import { CRUDPizzasComponent } from './components/CRUDS/crudpizzas/crudpizzas.component';
 export const routes: Routes = [
     { path: '', component: InicioComponent },
     { path: 'carta', component: CartaComponent },
@@ -19,23 +19,7 @@ export const routes: Routes = [
     { path: 'admin/email', component: SendEmailComponent },
     { path: 'new-pizza', component: PizzasFormComponent},
     { path: ':id/edit', component: PizzasFormComponent},
-
-    {
-        path: 'dashboardadmin',
-        loadComponent: () =>
-          import('./components/dasbordnav/dasbordnav.component').then(
-            (m) => m.DasbordnavComponent
-          ),
-        children: [
-          {
-            path: 'pizzas',
-            loadComponent: () =>
-              import('./components/CRUDS/crudpizzas/crudpizzas.component').then(
-                (m) => m.CRUDPizzasComponent
-              ),
-          },
-        ],
-      }
-      
+    { path: 'admin', component: AdminComponent},
+    { path: 'admin/pizzas', component: CRUDPizzasComponent},
       
 ];
