@@ -48,3 +48,61 @@
     padding: 20px;
     border-radius: 10px;
 }
+
+
+
+/* Ícono flotante en la esquina superior derecha */
+.floating-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .floating-icon img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  /* Estilo para el modal del carrito */
+  .cart-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 350px;
+    padding: 20px;
+    z-index: 1001;
+    display: none;
+  }
+  
+  /* Mostrar el carrito cuando está visible */
+  .cart-content.show-cart {
+    display: block;
+  }
+  
+  .cart-content h5 {
+    margin: 0 0 10px 0;
+    text-align: center;
+  }
+  
+  .cart-content .list-group {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .cart-content .btn {
+    width: 100%;
+  }
+  
