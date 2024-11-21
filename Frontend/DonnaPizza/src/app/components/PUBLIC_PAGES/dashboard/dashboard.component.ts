@@ -13,8 +13,9 @@ import { FooterComponent } from "../../../footer/footer.component";
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   userLoginOn: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private loginService: LoginService, private router: Router) { }
 
@@ -24,8 +25,15 @@ export class DashboardComponent implements OnInit{
         this.userLoginOn = userLoginOn;
         if (!userLoginOn) {
           this.router.navigate(['/login']);
+        } else {
+          // Verifica si el usuario tiene rol ADMIN
+          this.isAdmin = this.loginService.getUserRole() === 'ADMIN';
         }
       }
     });
+  }
+
+  navigateToAdmin() {
+    this.router.navigate(['/admin']);
   }
 }

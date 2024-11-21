@@ -5,10 +5,16 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes, withViewTransitions()), 
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes, withViewTransitions()),
     provideClientHydration(),
-    provideHttpClient(), provideAnimationsAsync()]
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
+  ]
 };

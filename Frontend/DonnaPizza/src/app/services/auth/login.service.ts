@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError, BehaviorSubject, tap, map } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,46 +14,58 @@ export class LoginService {
   currentUserLoginOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   currentUserData: BehaviorSubject<String> = new BehaviorSubject<String>("");
   currentUserId: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  currentUserRole: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient) {
-    const helper = new JwtHelperService();
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private router: Router) {
     const token = sessionStorage.getItem("token");
     if (token) {
-      this.currentUserLoginOn.next(true);
-      const decodedToken = helper.decodeToken(token);
-      this.currentUserData.next(token);
-      this.currentUserId.next(decodedToken.userId);
+      this.initializeUser(token);
     }
   }
 
+  private initializeUser(token: string): void {
+    this.currentUserLoginOn.next(true);
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    console.log(decodedToken)
+    this.currentUserData.next(token);
+    this.currentUserId.next(decodedToken.userId);
+    this.currentUserRole.next(decodedToken.rol);
+  }
+
   login(credentials: LoginRequest): Observable<any> {
-    const helper = new JwtHelperService();
-    return this.http.post<any>(environment.urlHost + "auth/login", credentials).pipe(
+    return this.http.post<any>(`${environment.urlHost}auth/login`, credentials).pipe(
       tap((userData) => {
         sessionStorage.setItem("token", userData.token);
-        this.currentUserData.next(userData.token);
-        const decodedToken = helper.decodeToken(userData.token);
-        const userId = Number(decodedToken.userId);
-        this.currentUserId.next(userId);
-        this.currentUserLoginOn.next(true);
+        this.initializeUser(userData.token);
       }),
       map((userData) => userData.token),
       catchError(this.handleError)
     );
   }
 
-  logOut():void {
+  getUserRole(): string | null {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.rol;
+    }
+    return null;
+  }
+
+  logOut(): void {
     sessionStorage.removeItem("token");
     this.currentUserLoginOn.next(false);
     this.currentUserId.next(null);
+    this.currentUserRole.next(null);
+    this.router.navigate(['/login']);
   }
 
   private handleError(error: HttpErrorResponse) {
     console.error('Error:', error);
     return throwError(() => new Error('Algo salió mal: ' + error.message));
   }
-  
-  get userData():Observable<String> {
+
+  get userData(): Observable<String> {
     return this.currentUserData.asObservable();
   }
 
