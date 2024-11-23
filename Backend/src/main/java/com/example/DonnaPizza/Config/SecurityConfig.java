@@ -46,6 +46,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/api/v1/**").permitAll()
+                                .requestMatchers("/forgotPassword/**").permitAll()
                                 .requestMatchers("/admin/enviarEmail").hasRole("ADMIN")  // Solo accesible para usuarios con rol ADMIN
                                 .anyRequest().authenticated()
                 )
