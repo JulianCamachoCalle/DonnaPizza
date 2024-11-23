@@ -1,5 +1,6 @@
 package com.example.DonnaPizza.MVC.User;
 
+import com.example.DonnaPizza.Auth.Password.ForgotPassword;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,6 +48,9 @@ public class User implements UserDetails {
     String password;
 
     LocalDate fecha_registro;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private ForgotPassword forgotPassword;
 
     @PrePersist
     protected void onCreate() {
