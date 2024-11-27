@@ -64,7 +64,7 @@
 
                     <div *ngIf="loginForm?.errors?.['invalidLogin']" class="text-danger">
                         Las credenciales proporcionadas son incorrectas.
-                      </div>
+                    </div>
 
                     <button type="submit" (click)="register()"
                         class="btn btn-login-register border px-3 py-2 my-2">Registrar</button>
@@ -90,10 +90,11 @@
                         <div *ngIf="passwordlogin?.errors?.['minlength']">La Contraseña debe tener al menos 8
                             caracteres!
                         </div>
-                        <div *ngIf="passwordlogin?.errors?.['pattern']">La Contraseña debe tener al menos 1 letra mayúscula y
+                        <div *ngIf="passwordlogin?.errors?.['pattern']">La Contraseña debe tener al menos 1 letra
+                            mayúscula y
                             1 carácter especial!</div>
                     </div>
-                    <a href="#" class="my-3">¿Olvidaste tu contraseña?</a>
+                    <a [routerLink]="'/forgot-password'" class="my-3">¿Olvidaste tu contraseña?</a>
                     <button type="submit" (click)="login()" class="btn btn-login-register border px-3 py-2">Iniciar
                         Sesión</button>
                 </form>

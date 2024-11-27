@@ -24,24 +24,12 @@ export class PersonalDetailsComponent implements OnInit {
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) { }
 
-  get username() {
-    return this.registerForm.get('username');
-  }
-
   get nombre() {
     return this.registerForm.get('nombre');
   }
 
   get apellido() {
     return this.registerForm.get('apellido');
-  }
-
-  get telefono() {
-    return this.registerForm.get('telefono');
-  }
-
-  get password() {
-    return this.registerForm.get('password');
   }
 
   get direccion() {
@@ -94,10 +82,7 @@ export class PersonalDetailsComponent implements OnInit {
       id_usuario: [''],
       nombre: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
       apellido: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
-      username: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern(/^9\d{8}$/)]],
       direccion: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$&*.]).{8,}$/)]],
     });
 
     // Escuchar el userId desde el LoginService
