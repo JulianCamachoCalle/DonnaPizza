@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class ForgotPasswordController {
 
     // Enviar email para verificar
     @PostMapping("/verificarEmail/{email}")
-    public ResponseEntity<String> verificarEmail(@PathVariable String email) {
+    public ResponseEntity<Map<String, String>> verificarEmail(@PathVariable String email) {
         User user = userRepository.findByUsername(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Ingrese un email valido"));
 
@@ -53,11 +54,11 @@ public class ForgotPasswordController {
         emailService.sendSimpleMessage(mailBody);
         forgotPasswordRepository.save(fp);
 
-        return ResponseEntity.ok("Email enviado para verificar!");
+        return ResponseEntity.ok(Map.of("message", "Email enviado para verificar!"));
     }
 
     @PostMapping("/verificarOTP/{otp}/{email}")
-    public ResponseEntity<String> verificarOTP(@PathVariable Integer otp, @PathVariable String email) {
+    public ResponseEntity<Map<String, String>> verificarOTP(@PathVariable Integer otp, @PathVariable String email) {
         User user = userRepository.findByUsername(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Ingrese un email valido"));
 
@@ -66,23 +67,23 @@ public class ForgotPasswordController {
 
         if (fp.getTiempo_expiracion().before(Date.from(Instant.now()))) {
             forgotPasswordRepository.deleteById(fp.getFp_id());
-            return new ResponseEntity<>("OTP ha expirado!", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(Map.of("error", "OTP ha expirado!"), HttpStatus.EXPECTATION_FAILED);
         }
 
-        return ResponseEntity.ok("OTP verificado");
+        return ResponseEntity.ok(Map.of("message", "OTP verificado"));
     }
 
     @PostMapping("/changePassword/{email}")
-    public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePassword changePassword, @PathVariable String email) {
+    public ResponseEntity<Map<String, String>> changePasswordHandler(@RequestBody ChangePassword changePassword, @PathVariable String email) {
 
         if (!Objects.equals(changePassword.password(), changePassword.repeatPassword())) {
-            return new ResponseEntity<>("Porfavor ingresa tu contraseña otra vez", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(Map.of("error", "Por favor ingresa tu contraseña otra vez"), HttpStatus.EXPECTATION_FAILED);
         }
 
         String encodedPassword = passwordEncoder.encode(changePassword.password());
         userRepository.updatePassword(email, encodedPassword);
 
-        return ResponseEntity.ok("La contraseña ha sido cambiada");
+        return ResponseEntity.ok(Map.of("message", "La contraseña ha sido cambiada"));
     }
 
     private Integer otpGenerator() {

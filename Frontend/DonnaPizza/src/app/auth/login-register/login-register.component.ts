@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { EmailValidator, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/auth/login.service';
 import { LoginRequest } from '../../services/auth/login.Request';
 import { NavbarComponent } from "../../navbar/navbar.component";
@@ -14,7 +14,7 @@ import { telefonoValidators } from '../../validators/telefonoValidators';
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, FooterComponent, RouterLink],
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
 })

@@ -7,4 +7,5 @@ export const environment = {
     urlApiDetallePedido: 'http://localhost:8080/api/v1/detalles-pedido',  // Nueva API para DetallePedido
     urlApiCliente: 'http://localhost:8080/api/v1/clientes',            // Nueva API para Clientes
     urlApiEmail: 'http://localhost:8080/admin/enviarEmail',
+    urlForgotPassword: 'http://localhost:8080/forgotPassword',
 };
