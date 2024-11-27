@@ -12,6 +12,7 @@ import { CRUDPizzasComponent } from './components/CRUDS/crudpizzas/crudpizzas.co
 import { CRUDPedidosComponent } from './components/CRUDS/crudpedidos/crudpedidos.component';
 import { NewClienteComponent } from './components/FORMS/fromcliente/fromcliente.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 export const routes: Routes = [
     { path: '', component: InicioComponent },
     { path: 'carta', component: CartaComponent },
@@ -24,7 +25,8 @@ export const routes: Routes = [
     { path: ':id/edit', component: PizzasFormComponent },
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
     { path: 'admin/pizzas', component: CRUDPizzasComponent, canActivate: [AuthGuard] },
-    { path: 'pedidos', component: CRUDPedidosComponent},
-    { path: 'fromclientes', component: NewClienteComponent},
-    { path: '**', redirectTo: '/' }
+    { path: 'pedidos', component: CRUDPedidosComponent },
+    { path: 'fromclientes', component: NewClienteComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: '**', redirectTo: '/' },
 ];
