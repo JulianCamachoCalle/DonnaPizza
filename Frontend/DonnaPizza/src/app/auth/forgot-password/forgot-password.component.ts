@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { ForgotPasswordService } from '../../services/auth/forgot-password.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { FooterComponent } from "../../footer/footer.component";
 import { NavbarComponent } from "../../navbar/navbar.component";
 import { Router } from '@angular/router';
+import { emailValidator } from '../../validators/email.validators';
+import { UserService } from '../../services/user/user.service';
+import { passwordMatchValidator } from '../../validators/password.validators';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,13 +24,19 @@ export class ForgotPasswordComponent {
   password = '';
   repeatPassword = '';
   forgotPassword!: FormGroup;
+  changePassword!: FormGroup;
 
-  constructor(private authService: ForgotPasswordService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private authService: ForgotPasswordService, private formBuilder: FormBuilder, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
     this.forgotPassword = this.formBuilder.group({
-      emailvalidar: ['', [Validators.required, Validators.email]]
+      emailvalidar: ['', [Validators.required, Validators.email], [emailValidator(this.userService)]]
     });
+
+    this.changePassword = this.formBuilder.group({
+      firstPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$&*.]).{8,}$/)]],
+      secondPassword: ['', [Validators.required]],
+    }, { validators: passwordMatchValidator() });
   }
 
   enviarEmail() {
@@ -58,6 +67,29 @@ export class ForgotPasswordComponent {
 
 
   verificarOTP() {
+    // Verificar si otp es nulo o indefinido
+    if (this.otp == null || this.otp === undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, ingresa un TOKEN válido.',
+      });
+      return;
+    }
+
+    // Convertir otp de string a number
+    const otpNumber = Number(this.otp);
+
+    // Verificar que la conversión fue exitosa
+    if (isNaN(otpNumber)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El TOKEN debe ser un número válido.',
+      });
+      return;
+    }
+
     Swal.fire({
       title: 'Verificando TOKEN...',
       text: 'Por favor espera unos segundos.',
@@ -66,7 +98,8 @@ export class ForgotPasswordComponent {
         Swal.showLoading();
       },
     });
-    this.authService.verificarOTP(this.otp, this.email).subscribe({
+    // Llamar al servicio con el número convertido
+    this.authService.verificarOTP(otpNumber, this.email).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',
@@ -111,6 +144,14 @@ export class ForgotPasswordComponent {
   }
 
   get emailvalidar() {
-    return this.forgotPassword.get('email');
+    return this.forgotPassword.get('emailvalidar');
+  }
+
+  get firstPassword() {
+    return this.changePassword.get('firstPassword')
+  }
+
+  get secondPassword() {
+    return this.changePassword.get('secondPassword')
   }
 }
