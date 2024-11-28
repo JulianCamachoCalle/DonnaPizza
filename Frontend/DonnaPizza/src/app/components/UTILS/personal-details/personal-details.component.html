@@ -7,9 +7,11 @@
             <p class="my-4"><b>Teléfono: </b> {{user?.telefono}} </p>
             <p class="my-4"><b>Correo: </b> {{user?.username}} </p>
             <p class="my-4"><b>Dirección: </b> {{user?.direccion}} </p>
+            <!--
             <button *ngIf="userLoginOn && !editMode" (click)="editMode=true" class="btn btn-dark my-2">
                 Editar Datos Personales
             </button>
+            -->
             <button (click)="logOut()" class="btn btn-danger m-2">
                 Cerrar Sesion
             </button>

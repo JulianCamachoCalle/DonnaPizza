@@ -79,13 +79,11 @@ export class PersonalDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      id_usuario: [''],
       nombre: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
       apellido: ['', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/)]],
       direccion: ['', Validators.required],
     });
 
-    // Escuchar el userId desde el LoginService
     this.loginService.userId.subscribe({
       next: (userId) => {
         if (userId !== null) {
@@ -94,12 +92,9 @@ export class PersonalDetailsComponent implements OnInit {
               this.user = userData;
               this.registerForm.patchValue({
                 id_usuario: userData.id_usuario,
-                username: userData.username,
                 nombre: userData.nombre,
                 apellido: userData.apellido,
-                telefono: userData.telefono,
                 direccion: userData.direccion,
-                password: userData.password,
               });
             },
             error: (errorData) => {
