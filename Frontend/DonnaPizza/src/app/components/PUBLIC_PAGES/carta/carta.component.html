@@ -22,21 +22,37 @@
     
 
     <div class="container mt-4">
-        <form action="#" method="GET" class="d-flex mb-5">
-            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-            <select class="form-select me-2" name="categoria">
-                <option value="entrada">Entrada</option>
+        <form (ngSubmit)="applyFilters()" class="d-flex mb-5">
+            <input 
+                class="form-control me-2" 
+                type="text" 
+                placeholder="Buscar" 
+                [(ngModel)]="searchQuery" 
+                name="searchQuery"
+                aria-label="Buscar">
+            <select 
+                class="form-select me-2" 
+                [(ngModel)]="selectedCategory" 
+                name="category">
+                <option value="">Todos</option>
                 <option value="pizza">Pizza</option>
                 <option value="pastas">Pastas</option>
             </select>
             <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
-
+    
         <div class="container-fluid d-flex justify-content-center">
             <div class="row g-2" id="pizza-container">
-                <app-pizza-list-component></app-pizza-list-component>
+                <app-pizza-list-component 
+                    *ngIf="selectedCategory === '' || selectedCategory === 'pizza'"
+                    [searchQuery]="searchQuery">
+                </app-pizza-list-component>
+                <app-pastas-list-component 
+                    *ngIf="selectedCategory === '' || selectedCategory === 'pastas'"
+                    [searchQuery]="searchQuery">
+                </app-pastas-list-component>
             </div>
         </div>
     </div>
-</div>
+    
 <app-footer></app-footer>

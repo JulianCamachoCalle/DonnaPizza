@@ -11,6 +11,9 @@ import { AdminComponent } from './components/ADMIN/admin/admin.component';
 import { CRUDPizzasComponent } from './components/CRUDS/crudpizzas/crudpizzas.component';
 import { CRUDPedidosComponent } from './components/CRUDS/crudpedidos/crudpedidos.component';
 import { NewClienteComponent } from './components/FORMS/fromcliente/fromcliente.component';
+import { CRUDPizzasFamiliaresComponent } from './components/CRUDS/crudpizzasfamiliares/crudpizzasfamiliares.component';
+import { CRUDEntradasComponent } from './components/CRUDS/crudentrada/crudentrada.component';
+import { CRUDPastasComponent } from './components/CRUDS/crudpastas/crudpastas.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 export const routes: Routes = [
@@ -27,6 +30,9 @@ export const routes: Routes = [
     { path: 'admin/pizzas', component: CRUDPizzasComponent, canActivate: [AuthGuard] },
     { path: 'pedidos', component: CRUDPedidosComponent },
     { path: 'fromclientes', component: NewClienteComponent },
+    { path: 'admin/pizzasfamiliares', component: CRUDPizzasFamiliaresComponent },
+    { path: 'admin/pastas', component: CRUDPastasComponent },
+    { path: 'admin/entradas', component: CRUDEntradasComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: '**', redirectTo: '/' },
 ];

@@ -1,0 +1,49 @@
+<div class="crud">
+    <app-dasbordnav></app-dasbordnav>
+    <div class="container-fluid d-flex flex-column my-4 p-3">
+      <h1 class="mb-5 text-center">Lista de Entradas</h1>
+  
+      <div class="text-start">
+        <button class="btn btn-primary py-2 px-3" routerLink="/new-entrada">
+          Agregar Entrada
+        </button>
+        <button class="btn btn-success mx-3 py-2 px-3" (click)="generarReporteExcel()">
+          Descargar Reporte Excel <i class="fa-solid fa-file-excel" style="color: #ffffff;"></i>
+        </button>
+      </div>
+  
+      <!-- Tabla para listar entradas -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Disponible</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entrada of entradas">
+            <td>{{ entrada.id_entrada }}</td>
+            <td>{{ entrada.nombre }}</td>
+            <td>{{ entrada.descripcion }}</td>
+            <td>{{ entrada.precio }}</td>
+            <td>{{ entrada.disponible ? 'Sí' : 'No' }}</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="edit-button" [routerLink]="['/', entrada.id_entrada, 'edit']">
+                  Editar
+                </button>
+                <button class="delete-button" (click)="deleteEntrada(entrada)">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

@@ -97,7 +97,7 @@ public class PastaService {
 
         // Crear fila de encabezado
         HSSFRow row = sheet.createRow(1);
-        String[] headers = {"ID_pasta", "Descripcion", "Precio", "Disponible"};
+        String[] headers = {"ID_pasta", "Nombre", "Descripcion", "Precio", "Disponible"};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
             cell.setCellValue(headers[i]);
@@ -117,6 +117,7 @@ public class PastaService {
         for (Pasta pasta : pastas) {
             HSSFRow dataRow = sheet.createRow(dataRowIndex++);
             dataRow.createCell(0).setCellValue(pasta.getId_pasta());
+            dataRow.createCell(1).setCellValue(pasta.getNombre());
             dataRow.createCell(1).setCellValue(pasta.getDescripcion());
             dataRow.createCell(2).setCellValue(pasta.getPrecio());
             dataRow.createCell(3).setCellValue(pasta.getDisponible() ? "Disponible" : "No Disponible");

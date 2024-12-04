@@ -1,0 +1,47 @@
+<div class="crud">
+    <app-dasbordnav></app-dasbordnav>
+    <div class="container-fluid d-flex flex-column my-4 p-3">
+        <h1 class="mb-5 text-center">Lista de Pizzas Familiares</h1>
+
+        <div class="text-start">
+            <button class="btn btn-primary py-2 px-3" routerLink="/new-pizzafamiliar">
+                Agregar Pizza Familiar
+            </button>
+            <button class="btn btn-success mx-3 py-2 px-3" (click)="generarReporteExcel()">
+                Descargar Reporte Excel <i class="fa-solid fa-file-excel" style="color: #ffffff;"></i>
+            </button>
+        </div>
+        <!-- Tabla para listar pizzas familiares -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Disponible</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pizzaFamiliar of pizzasFamiliares">
+                    <td>{{ pizzaFamiliar.id_pizzasFamiliares }}</td>
+                    <td>{{ pizzaFamiliar.nombre }}</td>
+                    <td>{{ pizzaFamiliar.descripcion }}</td>
+                    <td>{{ pizzaFamiliar.precio }}</td>
+                    <td>{{ pizzaFamiliar.disponible }}</td>
+                    <td class="text-end">
+                        <div class="btn-group">
+                            <button class="edit-button" [routerLink]="['/', pizzaFamiliar.id_pizzasFamiliares, 'edit']">
+                                <!-- Edit SVG -->
+                            </button>
+                            <button class="delete-button" (click)="deletePizzaFamiliar(pizzaFamiliar)">
+                                <!-- Delete SVG -->
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

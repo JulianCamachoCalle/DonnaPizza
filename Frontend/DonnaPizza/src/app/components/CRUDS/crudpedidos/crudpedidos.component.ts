@@ -29,8 +29,9 @@ export class CRUDPedidosComponent implements OnInit {
   loadAll() {
     this.pedidosService.list().subscribe(pedidos => {
       this.pedidos = pedidos;
-    })
+    });
   }
+  
 
   deletePedido(pedido: Pedido) {
     Swal.fire({
@@ -61,6 +62,7 @@ export class CRUDPedidosComponent implements OnInit {
       }
     });
   }
+  
 
   generarReporteExcel() {
     const url = 'http://localhost:8080/excelpedidos'; // Ajusta la ruta según tu API
