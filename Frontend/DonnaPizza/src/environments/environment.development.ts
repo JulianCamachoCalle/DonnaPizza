@@ -8,4 +8,7 @@ export const environment = {
     urlApiCliente: 'http://localhost:8080/api/v1/clientes',            // Nueva API para Clientes
     urlApiEmail: 'http://localhost:8080/admin/enviarEmail',
     urlForgotPassword: 'http://localhost:8080/forgotPassword',
+    urlApiPizzasFamiliares: 'http://localhost:8080/api/v1/pizzasfamiliares',
+    urlApiPastas: 'http://localhost:8080/api/v1/pastas',
+    urlApiEntradas: 'http://localhost:8080/api/v1/entradas',
 };

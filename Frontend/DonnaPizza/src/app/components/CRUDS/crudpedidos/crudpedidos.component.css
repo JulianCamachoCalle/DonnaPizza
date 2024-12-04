@@ -1,0 +1,9 @@
+@import url('../../../../assets/css/botones_formulario.css');
+
+.crud {
+    display: flex;
+}
+
+app-dasbordnav {
+    background-color: #212529 !important;
+}
