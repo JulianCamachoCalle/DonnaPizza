@@ -1,0 +1,38 @@
+<div class="container-fluid d-flex justify-content-center">
+  <div class="row g-2" id="pasta-container">
+    <div *ngFor="let pasta of filteredPastas" class="col-12 col-md-6 col-xl-4 mb-4 d-flex justify-content-center">
+      <div class="card border border-0 bg-light mx-3 my-0" style="width: 21.875rem; height: 23.125rem;" id="plato">
+        <img [src]="'assets/img/pastas/' + pasta.nombre + '.jpg'" class="card-img-top img-fluid"
+          alt="{{ pasta.nombre }}" (error)="onImageError($event)">
+        <div class="card-body d-flex justify-content-center align-items-center flex-column m-0 p-0">
+          <h5 class="card-title text-center m-0 p-0" id="nombre-plato">{{ pasta.nombre }}</h5>
+          <p class="card-text text-center mb-1 mx-1 p-0" id="descripcion-plato">{{ pasta.descripcion }}</p>
+          <p class="card-text my-2 p-0" id="precio-plato">S/. {{ pasta.precio }}</p>
+          <button class="btn btn-compra border border-0 px-2 py-1" (click)="openModal(pasta)">
+            Comprar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" [ngClass]="{ 'show': selectedPasta }" [style.display]="selectedPasta ? 'block' : 'none'" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ selectedPasta?.nombre }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="selectedPasta = null"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ selectedPasta?.descripcion }}</p>
+        <p>Precio: S/. {{ selectedPasta?.precio }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="selectedPasta = null">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="addToCart()">Añadir al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>

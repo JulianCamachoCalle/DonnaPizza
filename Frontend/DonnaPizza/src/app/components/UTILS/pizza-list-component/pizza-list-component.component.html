@@ -1,46 +1,65 @@
 <div class="container-fluid d-flex justify-content-center">
-    <div class="row g-2" id="pizza-container">
-      <div *ngFor="let pizza of pizzas" class="col-12 col-md-6 col-xl-4 mb-4 d-flex justify-content-center">
-        <div class="card border border-0 bg-success mx-3 my-0" style="width: 21.875rem; height: 23.125rem;" id="plato">
-          <img [src]="'assets/img/pizzas/' + pizza.nombre + '.jpg'" class="card-img-top img-fluid"
-            alt="{{ pizza.nombre }}" (error)="onImageError($event)">
-          <div class="card-body d-flex justify-content-center align-items-center flex-column m-0 p-0">
-            <h5 class="card-title text-center m-0 p-0" id="nombre-plato">{{ pizza.nombre }}</h5>
-            <p class="card-text text-center mb-1 mx-1 p-0" id="ingredientes-plato">{{ pizza.descripcion }}</p>
-            <p class="card-text my-2 p-0" id="precio-plato">S/. {{ pizza.precio }}</p>
-            <button class="btn btn-compra border border-0 px-2 py-1" (click)="openModal(pizza)">
-              Comprar
-            </button>
-          </div>
+  <div class="row g-2" id="pizza-container">
+    <div *ngFor="let pizza of filteredPizzas" class="col-12 col-md-6 col-xl-4 mb-4 d-flex justify-content-center">
+      <div class="card border border-0 bg-success mx-3 my-0" style="width: 21.875rem; height: 23.125rem;" id="plato">
+        <img [src]="'assets/img/pizzas/' + pizza.nombre + '.jpg'" class="card-img-top img-fluid"
+          alt="{{ pizza.nombre }}" (error)="onImageError($event)">
+        <div class="card-body d-flex justify-content-center align-items-center flex-column m-0 p-0">
+          <h5 class="card-title text-center m-0 p-0" id="nombre-plato">{{ pizza.nombre }}</h5>
+          <p class="card-text text-center mb-1 mx-1 p-0" id="ingredientes-plato">{{ pizza.descripcion }}</p>
+          <p class="card-text my-2 p-0" id="precio-plato">S/. {{ pizza.precio }}</p>
+          <button class="btn btn-compra border border-0 px-2 py-1" (click)="openModal(pizza)">
+            Comprar
+          </button>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Modal -->
-  <div class="modal fade" tabindex="-1" [ngClass]="{ 'show': selectedPizza }" [style.display]="selectedPizza ? 'block' : 'none'" aria-hidden="true">
-    <div class="modal-dialog">
+</div>
+
+<!-- Modal -->
+<div class="container-fluid d-flex justify-content-center align-items-center">
+  <div class="modal custom-modal" tabindex="-1" [ngClass]="{ 'show': selectedPizza }"
+    [style.display]="selectedPizza ? 'block' : 'none'" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ selectedPizza?.nombre }}</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="selectedPizza = null"></button>
-        </div>
-        <div class="modal-body">
-          <p>{{ selectedPizza?.descripcion }}</p>
-          <p>Precio: S/. {{ selectedPizza?.precio }}</p>
-          <div class="mb-3">
-            <label for="pizzaSize" class="form-label">Tamaño</label>
-            <select id="pizzaSize" class="form-select" [(ngModel)]="selectedSize">
-              <option value="Mediana">Mediana</option>
-              <option value="Familiar">Familiar</option>
-            </select>
+        <div class="modal-body d-flex m-0 p-0">
+          <!-- Imagen de la Pizza -->
+          <div class="col-6 pe-2">
+            <img [src]="'assets/img/pizzas/' + selectedPizza?.nombre + '.jpg'" class="img-fluid imagen-modal"
+              alt="{{ selectedPizza?.nombre }}" (error)="onImageError($event)" />
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="selectedPizza = null">Cancelar</button>
-          <button type="button" class="btn btn-primary" (click)="addToCart()">Añadir al carrito</button>
+
+          <!-- Detalles de la Pizza -->
+          <div class="col-6 d-flex flex-column p-2">
+            <div class="container-fluid d-flex justify-content-center pt-3">
+              <h5 class="nombre-modal">{{ selectedPizza?.nombre }}</h5>
+              <button type="button" class="btn-close pe-3" aria-label="Close" (click)="selectedPizza = null"></button>
+            </div>
+            <p class="descripcion-modal px-3 text-center py-2">{{ selectedPizza?.descripcion }}</p>
+            <div class="d-flex justify-content-center align-items-center">
+              <span class="badge me-2 precio-modal">
+                S/. {{ selectedPizza?.precio }}
+              </span>
+            </div>
+            <div class="py-2 d-flex justify-content-center flex-column">
+              <label for="pizzaSize" class="form-label size-modal">Tamaño</label>
+              <select id="pizzaSize" class="form-select size-select" [(ngModel)]="selectedSize">
+                <option value="Mediana">Mediana</option>
+                <option value="Familiar">Familiar</option>
+              </select>
+            </div>
+            <div class="py-3 d-flex justify-content-center flex-column align-items-center">
+              <button type="button" class="btn btn-danger mb-2" (click)="addToCart()">
+                Añadir al carrito
+              </button>
+              <button type="button" class="btn btn-secondary mt-3 mb-2" (click)="selectedPizza = null">
+                Cancelar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
