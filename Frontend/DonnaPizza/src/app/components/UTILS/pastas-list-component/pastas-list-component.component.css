@@ -1,1 +1,62 @@
 @import "../../PUBLIC_PAGES/carta/carta.component.css";
+
+
+.imagen-modal {
+    height: 100% !important;
+    width: 100%;
+    border-radius: 25px 0 0 25px;
+}
+
+.modal-content {
+    min-height: 500px;
+    border-radius: 25px;
+}
+
+.descripcion-modal {
+    color: rgb(0, 0, 0);
+    font-family: "Montserrat";
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.nombre-modal {
+    color: rgb(0, 0, 0);
+    font-family: "Montserrat";
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.precio-modal {
+    color: rgb(153, 0, 0);
+    font-size: 1.5rem;
+}
+
+.size-modal {
+    color: rgb(0, 0, 0);
+    font-family: "Montserrat";
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.size-select {
+    border: 1px solid black;
+}
+
+.btn-danger {
+    padding: 20px 30px !important;
+    border-radius: 20px !important;
+}
+
+.btn-secondary {
+    background-color: inherit;
+    border: 1px solid rgb(0, 23, 153);
+    color: rgb(0, 23, 153);
+    padding: 10px 20px !important;
+    border-radius: 20px !important;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(5, 34, 199);
+    color: white;
+}

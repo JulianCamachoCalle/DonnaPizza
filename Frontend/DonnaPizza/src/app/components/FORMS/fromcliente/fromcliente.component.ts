@@ -106,10 +106,12 @@ export class NewClienteComponent {
 
   realizarPagoPayPal(): void {
     const total = this.cartItems.reduce((sum, item) => sum + item.precio, 0).toFixed(2);
+
   
     this.payPalService.makePayment(total).subscribe(
       (response) => {
         if (response.status === 'success') {
+          window.location.href = response.redirect_url; // Redirige a PayPal
           alert('Pago con PayPal completado.');
           this.pagoCompletado = true; // Habilitar el botón de realizar pedido
         } else {
