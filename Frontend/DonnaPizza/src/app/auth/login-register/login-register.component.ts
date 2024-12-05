@@ -113,7 +113,10 @@ export class LoginRegisterComponent implements OnInit {
           text: response.message,  // Muestra el mensaje de la respuesta
           confirmButtonText: 'Aceptar'
         }).then(() => {
-          this.router.navigate(['/login']);
+          // Redirige al login y recarga la página
+          this.router.navigate(['/login']).then(() => {
+            window.location.reload();
+          });
         });
       },
       error: (errorData) => {
