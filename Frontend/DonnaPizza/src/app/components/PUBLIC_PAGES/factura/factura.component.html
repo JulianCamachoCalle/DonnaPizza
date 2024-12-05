@@ -1,0 +1,8 @@
+<div class="container mt-5">
+    <h2>Factura</h2>
+    <p><strong>Cliente:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</p>
+    <p><strong>Total:</strong> S/. {{ total }}</p>
+    <p><strong>Fecha:</strong> {{ fecha }}</p>
+    <button class="btn btn-primary" (click)="finalizar()">Finalizar</button>
+  </div>
+  

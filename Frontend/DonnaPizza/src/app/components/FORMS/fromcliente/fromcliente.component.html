@@ -94,6 +94,33 @@
     </div>
   </div>
 </div>
+<!-- Opciones de boleta o factura -->
+<div class="mt-4">
+  <h3>Tipo de Comprobante</h3>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="boleta"
+      name="tipoComprobante"
+      [(ngModel)]="tipoComprobante"
+      value="boleta"
+    />
+    <label class="form-check-label" for="boleta">Boleta</label>
+  </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      id="factura"
+      name="tipoComprobante"
+      [(ngModel)]="tipoComprobante"
+      value="factura"
+    />
+    <label class="form-check-label" for="factura">Factura</label>
+  </div>
+</div>
+
 
 <!-- Botón realizar pedido -->
 <button [disabled]="!pagoCompletado" (click)="saveCliente()" class="btn btn-primary w-100 mt-4">

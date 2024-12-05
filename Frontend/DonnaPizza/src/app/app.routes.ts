@@ -16,6 +16,8 @@ import { CRUDEntradasComponent } from './components/CRUDS/crudentrada/crudentrad
 import { CRUDPastasComponent } from './components/CRUDS/crudpastas/crudpastas.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { BoletaComponent } from './components/PUBLIC_PAGES/boleta/boleta.component';
+import { FacturaComponent } from './components/PUBLIC_PAGES/factura/factura.component';
 export const routes: Routes = [
     { path: '', component: InicioComponent },
     { path: 'carta', component: CartaComponent },
@@ -34,5 +36,7 @@ export const routes: Routes = [
     { path: 'admin/pastas', component: CRUDPastasComponent },
     { path: 'admin/entradas', component: CRUDEntradasComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'fromclientes/boleta', component: BoletaComponent },
+    { path: 'fromclientes/factura', component: FacturaComponent },
     { path: '**', redirectTo: '/' },
 ];
