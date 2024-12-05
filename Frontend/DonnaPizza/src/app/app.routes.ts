@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'new-pizza', component: PizzasFormComponent },
     { path: ':id/edit', component: PizzasFormComponent },
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
-    { path: 'admin/pizzas', component: CRUDPizzasComponent, canActivate: [AuthGuard] },
+    { path: 'admin/pizzas', component: CRUDPizzasComponent },
     { path: 'pedidos', component: CRUDPedidosComponent },
     { path: 'fromclientes', component: NewClienteComponent },
     { path: 'admin/pizzasfamiliares', component: CRUDPizzasFamiliaresComponent },
