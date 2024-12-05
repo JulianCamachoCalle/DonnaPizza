@@ -26,5 +26,6 @@ public class Pizzas {
 
     private Double precio;
 
-    private Integer disponible;
+    @Column(nullable = false)
+    private Integer disponible = 1;
 }
