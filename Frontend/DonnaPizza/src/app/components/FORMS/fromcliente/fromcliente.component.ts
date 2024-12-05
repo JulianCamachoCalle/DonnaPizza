@@ -5,12 +5,13 @@ import { ClienteService } from '../../../services/cliente/cliente.service';
 import { Router } from '@angular/router';
 import { CartService } from '../../../services/cartservicio/cart.service';
 import { Cliente } from '../../../models/cliente.model';
+import { NavbarComponent } from '../../../navbar/navbar.component';
 import { PayPalService } from '../../../services/paypal/paypal.service'; // Servicio de PayPal
 
 @Component({
   selector: 'app-new-cliente',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NavbarComponent],
   templateUrl: './fromcliente.component.html',
   styleUrls: ['./fromcliente.component.css'],
 })
