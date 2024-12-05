@@ -24,6 +24,8 @@ export class NewClienteComponent {
     direccion: '',
   };
 
+  tipoComprobante: string = ''; // Nueva propiedad para almacenar boleta o factura
+
   cartItems: any[] = [];
   metodoPago: string = '';
   tarjeta = {
@@ -54,24 +56,21 @@ export class NewClienteComponent {
         telefono: this.cliente.telefono,
         direccion: this.cliente.direccion,
       };
-
-      // Crear cliente en el backend
+  
       this.clienteService.create(newCliente).subscribe(
         (createdCliente: Cliente) => {
           alert('Cliente creado exitosamente');
-
-          // Calcular el total del carrito
+  
           const total = this.cartItems.reduce((sum, item) => sum + item.precio, 0);
-
-          // Crear pedido asociado
+  
           const newPedido = {
-            id_usuario: null, // Se mantiene en null por ahora
+            id_usuario: null,
             id_cliente: createdCliente.id_cliente,
             fecha: new Date().toISOString(),
             total: total,
           };
-
-          this.createPedido(newPedido); // Llamar al método para crear el pedido
+  
+          this.createPedido(newPedido);
         },
         (error) => {
           alert('Hubo un problema al crear el cliente');
@@ -82,12 +81,20 @@ export class NewClienteComponent {
       alert('Por favor, completa todos los campos correctamente.');
     }
   }
+  
+  
 
   createPedido(newPedido: any): void {
     this.cartService.createPedido(newPedido).subscribe(
       () => {
         alert('Pedido registrado exitosamente');
-        this.router.navigate(['/pedidos']); // Redirige a la lista de pedidos
+        
+        // Redirigir según el tipo de comprobante seleccionado
+        if (this.tipoComprobante === 'boleta') {
+          this.router.navigate(['fromclientes/boleta']);
+        } else if (this.tipoComprobante === 'factura') {
+          this.router.navigate(['fromclientes/factura']);
+        }
       },
       (error) => {
         alert('Hubo un problema al registrar el pedido');
@@ -95,14 +102,16 @@ export class NewClienteComponent {
       }
     );
   }
+  
 
   realizarPagoPayPal(): void {
     const total = this.cartItems.reduce((sum, item) => sum + item.precio, 0).toFixed(2);
-
+  
     this.payPalService.makePayment(total).subscribe(
       (response) => {
         if (response.status === 'success') {
-          window.location.href = response.redirect_url; // Redirige a PayPal
+          alert('Pago con PayPal completado.');
+          this.pagoCompletado = true; // Habilitar el botón de realizar pedido
         } else {
           alert('Error en el pago: ' + response.message);
         }
@@ -113,26 +122,24 @@ export class NewClienteComponent {
       }
     );
   }
-
+  
   realizarPagoYape(): void {
     alert('Por favor, escanea el código QR de Yape para completar el pago.');
-    // Simulación de pago con Yape
     setTimeout(() => {
-      this.pagoCompletado = true;
       alert('Pago con Yape completado.');
+      this.pagoCompletado = true; // Habilitar el botón de realizar pedido
     }, 2000);
   }
-
+  
   verificarPagoTarjeta(): void {
-    const total = this.cartItems.reduce((sum, item) => sum + item.precio, 0);
-    // Simulación de validación de tarjeta
     if (this.tarjeta.numero && this.tarjeta.fechaVencimiento && this.tarjeta.cvv) {
-      this.pagoCompletado = true;
       alert('Pago con tarjeta completado.');
+      this.pagoCompletado = true; // Habilitar el botón de realizar pedido
     } else {
       alert('Por favor, ingresa los datos de la tarjeta correctamente.');
     }
   }
+  
 
   isValid(): boolean {
     return (
