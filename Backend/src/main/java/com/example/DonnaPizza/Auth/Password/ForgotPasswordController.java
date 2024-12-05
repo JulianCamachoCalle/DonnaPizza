@@ -39,9 +39,20 @@ public class ForgotPasswordController {
                 .orElseThrow(() -> new UsernameNotFoundException("Ingrese un email valido"));
 
         int otp = otpGenerator();
+        String messageBody = String.format(
+                "Estimado/a %s,\n\n" +
+                        "Hemos recibido una solicitud para restablecer la contraseña asociada a tu cuenta. " +
+                        "Para continuar con el proceso, utiliza el siguiente código de verificación:\n\n" +
+                        "%d\n\n" +
+                        "Este código es válido durante los próximos 5 minutos. Si no has solicitado el restablecimiento " +
+                        "de tu contraseña, puedes ignorar este mensaje.\n\n" +
+                        "Si necesitas ayuda adicional, no dudes en contactarnos.\n\n" +
+                        "Atentamente,\nEl equipo de DonnaPizza",
+                user.getNombre(), otp);
+
         MailBody mailBody = MailBody.builder()
                 .to(email)
-                .text("Este es el token para recuperar tu contrasena: " + otp)
+                .text(messageBody)
                 .subject("token para recuperar contrasena")
                 .build();
 
