@@ -22,7 +22,7 @@ export class PizzaListComponentComponent implements OnInit, OnChanges {
   pizzas: Pizza[] = [];
   filteredPizzas: Pizza[] = [];
   selectedPizza: Pizza | null = null;
-  selectedSize: string = 'Mediana';
+  selectedSize: string = 'Mediana'; // El tamaño seleccionado por defecto
 
   ngOnInit(): void {
     this.loadAll();
@@ -58,11 +58,13 @@ export class PizzaListComponentComponent implements OnInit, OnChanges {
 
   addToCart(): void {
     if (this.selectedPizza) {
-      // Añadir el producto al carrito
       this.cartService.addItem({
+        id: this.selectedPizza.id_pizza, // ID de la pizza
         nombre: this.selectedPizza.nombre,
         precio: this.selectedPizza.precio,
-        tamano: this.selectedSize
+        tamano: this.selectedSize, // Tamaño seleccionado
+        tipo: 'pizza', // Tipo del producto (pizza en este caso)
+        cantidad: 1 // La cantidad predeterminada
       });
       console.log('Producto añadido al carrito:', this.selectedPizza.nombre, this.selectedSize);
     }

@@ -59,9 +59,12 @@ export class PastasListComponentComponent implements OnInit, OnChanges {
     if (this.selectedPasta) {
       // Añadir el producto al carrito
       this.cartService.addItem({
+        id: this.selectedPasta.id_pasta,
         nombre: this.selectedPasta.nombre,
         precio: this.selectedPasta.precio,
-        tamano: 'Único' // Valor por defecto
+        tamano: 'Único', // Valor por defecto
+        tipo: 'pasta',
+        cantidad: 1
       });
       console.log('Producto añadido al carrito:', this.selectedPasta.nombre);
     }

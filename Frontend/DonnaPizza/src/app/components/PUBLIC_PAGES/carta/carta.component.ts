@@ -37,4 +37,15 @@ export class CartaComponent {
   applyFilters(): void {
     // Este método no requiere lógica porque usamos bindings en los componentes hijos.
   }
+  
+  increaseQuantity(index: number): void {
+    this.cartService.updateQuantity(index, this.cartItems[index].cantidad + 1);
+}
+
+decreaseQuantity(index: number): void {
+    if (this.cartItems[index].cantidad > 1) {
+        this.cartService.updateQuantity(index, this.cartItems[index].cantidad - 1);
+    }
+}
+
 }

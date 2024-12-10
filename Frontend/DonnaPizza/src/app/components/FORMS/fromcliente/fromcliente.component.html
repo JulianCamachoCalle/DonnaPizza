@@ -30,13 +30,26 @@
     </div>
 
     <!-- Mostrar los ítems del carrito -->
-    <h3 class="mt-4">Pizzas en el Carrito</h3>
+    <h3 class="mt-4">Carrito de Pizzas</h3>
     <ul class="list-group">
-      <li *ngFor="let item of cartItems" class="list-group-item d-flex justify-content-between align-items-center">
-        {{ item.nombre }} ({{ item.tamano }})
-        <span>S/. {{ item.precio }}</span>
+      <li
+        *ngFor="let item of cartItems"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <strong>{{ item.nombre }} ({{ item.tamano }})</strong>
+          <br />
+          Cantidad: {{ item.cantidad }}
+          <br />
+          Precio unitario: S/. {{ item.precio }}
+        </div>
+        <span class="badge bg-primary rounded-pill">
+          Total: S/. {{ item.total }}
+        </span>
       </li>
     </ul>
+    
+
 
     <!-- Opciones de pago -->
 <div class="mt-4">
@@ -94,32 +107,17 @@
     </div>
   </div>
 </div>
-<!-- Opciones de boleta o factura -->
+<!-- Opciones de descarga -->
 <div class="mt-4">
-  <h3>Tipo de Comprobante</h3>
-  <div class="form-check">
-    <input
-      class="form-check-input"
-      type="radio"
-      id="boleta"
-      name="tipoComprobante"
-      [(ngModel)]="tipoComprobante"
-      value="boleta"
-    />
-    <label class="form-check-label" for="boleta">Boleta</label>
-  </div>
-  <div class="form-check">
-    <input
-      class="form-check-input"
-      type="radio"
-      id="factura"
-      name="tipoComprobante"
-      [(ngModel)]="tipoComprobante"
-      value="factura"
-    />
-    <label class="form-check-label" for="factura">Factura</label>
-  </div>
+  <h3>Descargar Comprobante</h3>
+  <button class="btn btn-primary me-2" (click)="descargarPDF('boleta')">
+    Descargar Boleta
+  </button>
+  <button class="btn btn-secondary" (click)="descargarPDF('factura')">
+    Descargar Factura
+  </button>
 </div>
+
 
 
 <!-- Botón realizar pedido -->
